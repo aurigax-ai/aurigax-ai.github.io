@@ -1,0 +1,22 @@
+{
+  "fetchedAt": "2026-10-01T19:49:06.680Z",
+  "release": {
+    "tag_name": "v0.3.0",
+    "html_url": "https://github.com/aurigax-ai/pine/releases/tag/v0.3.0",
+    "published_at": "2026-10-01T16:30:19Z",
+    "draft": false,
+    "prerelease": false,
+    "assets": [
+      {
+        "name": "pine-0.3.0-linux-x64.tar.gz",
+        "size": 164595340,
+        "browser_download_url": "https://github.com/aurigax-ai/pine/releases/download/v0.3.0/pine-0.3.0-linux-x64.tar.gz"
+      },
+      {
+        "name": "pine-0.3.0.AppImage",
+        "size": 167484018,
+        "browser_download_url": "https://github.com/aurigax-ai/pine/releases/download/v0.3.0/pine-0.3.0.AppImage"
+      }
+    ]
+  }
+}

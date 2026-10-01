@@ -1,0 +1,20 @@
+---
+import { href } from '../lib/paths'
+import { APP_REPO_URL, MARKETPLACE_REPO_URL, RELEASES_URL } from '../lib/site'
+---
+
+<footer class="mt-auto border-t border-line">
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-4 py-8 text-sm text-muted">
+    <p>
+      MIT licensed, as declared in the app's{' '}
+      <a class="underline underline-offset-2 hover:text-fg" href={`${APP_REPO_URL}/blob/main/package.json`} rel="noopener">package.json</a>.
+    </p>
+    <ul class="flex flex-wrap gap-x-6 gap-y-2">
+      <li><a class="hover:text-fg" href={href('download/')}>Download</a></li>
+      <li><a class="hover:text-fg" href={href('extensions/')}>Extensions</a></li>
+      <li><a class="hover:text-fg" href={APP_REPO_URL} rel="noopener">Source</a></li>
+      <li><a class="hover:text-fg" href={RELEASES_URL} rel="noopener">Releases</a></li>
+      <li><a class="hover:text-fg" href={MARKETPLACE_REPO_URL} rel="noopener">Marketplace repository</a></li>
+    </ul>
+  </div>
+</footer>

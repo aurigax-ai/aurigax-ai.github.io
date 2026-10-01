@@ -1,0 +1,210 @@
+---
+import Icon from '../components/Icon.astro'
+import Shot from '../components/Shot.astro'
+import Base from '../layouts/Base.astro'
+import { href } from '../lib/paths'
+
+const also = [
+  {
+    title: 'Workspaces come back',
+    body: 'Layout and scrollback are saved as you work. After a restart each pane returns idle in its folder. Running processes do not survive a quit.',
+  },
+  {
+    title: 'Attention where it is needed',
+    body: 'Panes report waiting, done and failed. Unread badges, a notification centre and desktop notifications take you to the right pane.',
+  },
+  {
+    title: 'An assistant on a model you pick',
+    body: 'Chat, command suggestions and completions through Ollama, an OpenAI-compatible server, OpenRouter, OpenAI or Anthropic. Off until you choose a provider.',
+  },
+  {
+    title: 'Git built in',
+    body: 'Branch and change counts in the top bar, a panel to stage and commit, a commit graph and blame.',
+  },
+  {
+    title: 'Workspaces in their own windows',
+    body: 'Move a workspace or a single pane to another window. Its shells keep running through the move.',
+  },
+  {
+    title: 'Settings sync you own',
+    body: 'Mirror settings to a folder you control, such as a git repository or Syncthing. Secrets and permission grants never sync.',
+  },
+]
+---
+
+<Base
+  title="Pine: the terminal workspace for coding agents"
+  description="Pine is a terminal-first desktop workspace for Linux: command blocks, split panes, an editor, a browser agents can drive, sandboxed workspaces and extensions."
+  current="home"
+>
+  <section class="overflow-hidden">
+    <div
+      class="wrap grid items-center gap-10 pb-16 pt-12 md:pt-16 lg:grid-cols-[minmax(0,11fr)_minmax(0,13fr)] lg:gap-12 lg:pb-20"
+    >
+      <div>
+        <h1 class="text-[2rem] font-semibold leading-[1.1] tracking-tight lg:text-[clamp(2rem,3.1vw,2.75rem)]">
+          The terminal workspace for coding agents
+        </h1>
+        <p class="mt-6 max-w-[46ch] text-lg leading-relaxed text-muted">
+          Command blocks, split panes, an editor, a browser agents can drive and sandboxed workspaces, in one
+          desktop app for Linux.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="btn btn-primary" href={href('download/')}><Icon name="download" /> Download</a>
+          <a class="btn btn-quiet" href={href('extensions/')}>Extensions</a>
+        </div>
+      </div>
+      <div class="rise lg:w-[66rem] xl:w-[70rem]">
+        <Shot
+          name="hero"
+          eager
+          sizes="(min-width: 1280px) 1120px, (min-width: 1024px) 1056px, 100vw"
+          alt="The Pine window: a workspace list, a file tree, a terminal whose commands are separate blocks, a second tab running a dev server, and an editor showing cart.js."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap py-16 md:py-24" aria-labelledby="blocks">
+    <h2 id="blocks" class="text-3xl font-semibold tracking-tight md:text-4xl">Every command is a block</h2>
+    <p class="mt-4 max-w-[60ch] text-lg leading-relaxed text-muted">
+      Select a block to copy it, rerun it or send it to an agent. Failed commands are marked, and split panes
+      keep shells side by side.
+    </p>
+    <div class="mt-10">
+      <Shot
+        name="blocks"
+        sizes="(min-width: 1280px) 1168px, 100vw"
+        alt="Two terminals side by side. On the left the git diff block is selected and a failed git checkout is marked in red. On the right, git log and the contents of discount.js."
+      />
+    </div>
+  </section>
+
+  <section class="wrap py-16 md:py-24" aria-labelledby="cli">
+    <div class="grid grid-cols-1 items-end gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
+      <div>
+        <h2 id="cli" class="text-3xl font-semibold tracking-tight md:text-4xl">
+          Agents drive the app with the pine CLI
+        </h2>
+        <p class="mt-4 max-w-[52ch] text-lg leading-relaxed text-muted">
+          Every pane has a <code>pine</code> command. An agent can start a dev server in a tab you can watch,
+          open the page in a browser pane and click through it.
+        </p>
+      </div>
+      <pre
+        class="codeblock"
+        tabindex="0"
+        aria-label="Commands typed in the screenshot below"><code>pine process run "node src/server.js" --name storefront
+pine browse open http://127.0.0.1:4173
+pine browse snapshot -i
+pine browse find role button click --name "Add to cart"
+pine browse get text "#count"</code></pre>
+    </div>
+    <div class="mt-10">
+      <Shot
+        name="browser"
+        sizes="(min-width: 1280px) 1168px, 100vw"
+        alt="A terminal where the pine CLI started a dev server in a tab named storefront, opened it in a browser pane, listed the page's buttons and clicked Add to cart. The browser pane shows the shop with Cart: 1."
+      />
+    </div>
+  </section>
+
+  <section class="wrap py-16 md:py-24" aria-labelledby="control">
+    <h2 id="control" class="text-3xl font-semibold tracking-tight md:text-4xl">
+      You approve what an agent may do
+    </h2>
+    <div class="mt-10 grid gap-x-10 gap-y-12 lg:grid-cols-12">
+      <figure class="lg:col-span-8">
+        <Shot
+          name="approval"
+          sizes="(min-width: 1024px) 760px, 100vw"
+          alt="An approval card under the terminal: zsh wants to drive the in-app browser, with the buttons Deny, Allow for this pane and Allow once. The workspace row says Needs your approval for browse."
+        />
+      </figure>
+      <div class="lg:col-span-4 lg:self-center">
+        <h3 class="text-xl font-semibold tracking-tight">Approval cards</h3>
+        <p class="mt-3 leading-relaxed text-muted">
+          A call that needs a permission the pane lacks waits on a card: allow once, allow for the pane, or
+          deny.
+        </p>
+      </div>
+      <div class="lg:col-span-4 lg:self-center">
+        <h3 class="text-xl font-semibold tracking-tight">Sandboxed workspaces</h3>
+        <p class="mt-3 leading-relaxed text-muted">
+          Turn the sandbox on for a workspace and its shells run confined. Refused connections are listed under
+          Blocked, where you can allow a host.
+        </p>
+      </div>
+      <figure class="lg:col-span-8">
+        <Shot
+          name="sandbox"
+          sizes="(min-width: 1024px) 760px, 100vw"
+          alt="The Blocked tab of a sandboxed workspace's settings, listing two refused network connections, example.org and example.com on port 443, each with an Allow button."
+        />
+      </figure>
+    </div>
+  </section>
+
+  <section class="wrap py-16 md:py-24" aria-labelledby="files">
+    <Shot
+      name="diff"
+      sizes="(min-width: 1280px) 1168px, 100vw"
+      alt="A file tree of the project, a terminal where pine git open README.md was run, and a diff pane showing the line added to README.md."
+    />
+    <div class="mt-10 lg:ml-[33.333%]">
+      <h2 id="files" class="text-3xl font-semibold tracking-tight md:text-4xl">Files and diffs beside the shell</h2>
+      <p class="mt-4 max-w-[60ch] text-lg leading-relaxed text-muted">
+        The file tree follows the terminal's folder and files open in a Monaco editor. The built-in Git
+        extension opens any change as a diff, for you or an agent.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-y border-line bg-surface py-16 md:py-24" aria-labelledby="extend">
+    <div class="wrap">
+      <div class="mx-auto max-w-[44rem] text-center">
+        <h2 id="extend" class="text-3xl font-semibold tracking-tight md:text-4xl">Extensions from git marketplaces</h2>
+        <p class="mt-4 text-lg leading-relaxed text-muted">
+          An extension is a manifest and an optional program. Add a marketplace repository in Settings,
+          install what you want and approve it before it runs.
+        </p>
+        <p class="mt-5">
+          <a class="link inline-flex items-center gap-1.5 text-lg" href={href('extensions/')}>
+            Extensions <Icon name="arrow-right" size={16} />
+          </a>
+        </p>
+      </div>
+      <div class="mx-auto mt-10 max-w-[60rem]">
+        <Shot
+          name="extensions"
+          sizes="(min-width: 1024px) 960px, 100vw"
+          alt="Settings, Extensions in Pine: the marketplace aurigax-ai/pine-extensions offers Keeper, Model runtime and Trellis, each with an Install button, above the list of installed extensions."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap py-16 md:py-24" aria-labelledby="also">
+    <h2 id="also" class="text-3xl font-semibold tracking-tight md:text-4xl">More that is built in</h2>
+    <dl class="mt-10 grid gap-x-14 gap-y-9 md:grid-cols-2">
+      {
+        also.map((item) => (
+          <div>
+            <dt class="text-lg font-medium">{item.title}</dt>
+            <dd class="mt-2 max-w-[52ch] leading-relaxed text-muted">{item.body}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section class="wrap pb-20 md:pb-28" aria-labelledby="get">
+    <div class="flex flex-wrap items-end justify-between gap-8 border-t border-line pt-12">
+      <div>
+        <h2 id="get" class="text-3xl font-semibold tracking-tight md:text-4xl">Pine runs on Linux today</h2>
+        <p class="mt-3 text-lg text-muted">Get the AppImage or the tarball from the latest release.</p>
+      </div>
+      <a class="btn btn-primary" href={href('download/')}><Icon name="download" /> Download</a>
+    </div>
+  </section>
+</Base>

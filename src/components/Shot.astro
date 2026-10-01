@@ -1,0 +1,57 @@
+---
+import type { ImageMetadata } from 'astro'
+import { getImage } from 'astro:assets'
+
+interface Props {
+  name: string
+  alt: string
+  sizes: string
+  eager?: boolean
+  class?: string
+}
+
+const { name, alt, sizes, eager = false, class: className = '' } = Astro.props
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/shots/*.png', { eager: true })
+
+function source(mode: 'dark' | 'light'): ImageMetadata {
+  const file = files[`../assets/shots/${name}-${mode}.png`]
+  if (!file) throw new Error(`missing capture ${name}-${mode}.png`)
+  return file.default
+}
+
+async function srcset(image: ImageMetadata) {
+  const widths = [640, 960, 1280, 1920, 2880].filter((width) => width < image.width)
+  widths.push(image.width)
+  const variants = await Promise.all(
+    widths.map(async (width) => {
+      const result = await getImage({ src: image, width, format: 'webp', quality: 82 })
+      return { width, url: result.src }
+    }),
+  )
+  return {
+    set: variants.map((variant) => `${variant.url} ${variant.width}w`).join(', '),
+    fallback: variants[Math.min(2, variants.length - 1)]?.url ?? '',
+  }
+}
+
+const dark = source('dark')
+const light = source('light')
+const darkSet = await srcset(dark)
+const lightSet = await srcset(light)
+---
+
+<picture>
+  <source media="(prefers-color-scheme: light)" type="image/webp" srcset={lightSet.set} sizes={sizes} />
+  <img
+    class:list={['shot', className]}
+    src={darkSet.fallback}
+    srcset={darkSet.set}
+    sizes={sizes}
+    width={dark.width}
+    height={dark.height}
+    alt={alt}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding={eager ? 'sync' : 'async'}
+    fetchpriority={eager ? 'high' : undefined}
+  />
+</picture>
