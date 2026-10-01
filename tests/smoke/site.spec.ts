@@ -62,7 +62,7 @@ test.describe('with GitHub answering', () => {
     await page.getByRole('tab', { name: 'Drive the browser' }).click()
     await expect(panel).toHaveCount(1)
     await expect(panel.getByRole('img')).toHaveAttribute('alt', /browser pane shows the invoices page/)
-    await expect(panel).toContainText('opens the page in a browser pane')
+    await expect(page.getByText('opens the page in a browser pane')).toBeVisible()
     await page.getByRole('tab', { name: 'Approve' }).press('Enter')
     await expect(panel).toHaveCount(1)
     await expect(panel.getByRole('img')).toHaveAttribute('alt', /asks to drive the in-app browser/)

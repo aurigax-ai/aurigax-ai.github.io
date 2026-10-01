@@ -20,6 +20,7 @@ const image = await shotSources(name)
   sizes={sizes}
   width={image.width}
   height={image.height}
+  style={`max-width: min(100%, ${image.width}px)`}
   alt={alt}
   loading={eager ? 'eager' : 'lazy'}
   decoding={eager ? 'sync' : 'async'}

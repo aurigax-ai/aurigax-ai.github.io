@@ -37,6 +37,9 @@ Page width 1200px. Sections are separated by 160 to 224px of space, not rules.
 ## Captures
 
 - Every capture sits on a `.stage` panel or inside a `card` panel, never bare on the page.
+- The hero stage alone carries a picture (`.stage-photo`): blurred pine boughs in grey-green mist,
+  washed out with heavy white grain. It is a pine close-up on purpose, not a landscape vista. Other
+  stages stay flat so the picture stays special.
 - A capture is shown close to its real size: between 0.75 and 1.05 of the app's CSS pixels. Crop a
   capture to fit a column; never shrink a whole window into one.
 - Below 768px a full-window capture keeps a readable width and pans sideways inside its stage.

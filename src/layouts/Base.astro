@@ -22,6 +22,7 @@ const ogImage = new URL(href('og.png'), Astro.site).href
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <slot name="head" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={href('favicon.svg')} />

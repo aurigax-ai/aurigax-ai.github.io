@@ -83,6 +83,11 @@ approval cards you see are the app's own.
 
 Do not commit the two capture files in the app repository.
 
+The picture behind the hero capture (`src/assets/stage.webp`) is not a capture. Its source,
+`capture/backgrounds/abstract-boughs.png`, was made with an image generator (blurred pine boughs in
+mist) and `node scripts/wash.mjs <source> src/assets/stage.webp [white|color|mono]` fades it and
+adds film grain. To change the look, edit the numbers at the top of that script and run it again.
+
 ## Deploy
 
 `.github/workflows/pages.yml` builds and deploys to GitHub Pages on every push to `main`.

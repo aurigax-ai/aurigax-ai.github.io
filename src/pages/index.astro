@@ -1,4 +1,5 @@
 ---
+import backdrop from '../assets/stage.webp'
 import Icon from '../components/Icon.astro'
 import Shot from '../components/Shot.astro'
 import { Showcase, type Slide } from '../components/Showcase'
@@ -101,7 +102,8 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
   description="Pine is a terminal for Linux where Claude Code, Codex and your own shell share panes, a browser, diffs and approvals."
   current="home"
 >
-  <section class="wrap pt-14 pb-20 md:pt-20 md:pb-28" aria-labelledby="claim">
+  <link slot="head" rel="preload" as="image" type="image/webp" href={backdrop.src} />
+  <section class="wrap pt-12 pb-16 md:pt-20 md:pb-24" aria-labelledby="claim">
     <h1 id="claim" class="display rise max-w-[21ch]">One workspace for you and every coding agent you run.</h1>
     <p class="lede rise mt-5 max-w-[54ch]" style="--rise: 1">
       Pine is a terminal for Linux where Claude Code, Codex and your own shell share panes, a browser, diffs and
@@ -114,12 +116,12 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
       </a>
     </div>
     <div class="rise mt-12 md:mt-16" style="--rise: 3">
-      <Showcase client:load slides={slides} />
+      <Showcase client:load slides={slides} backdrop={backdrop.src} />
     </div>
   </section>
 
-  <section class="wrap py-20 md:py-28" aria-labelledby="attention">
-    <div class="grid items-center gap-x-16 gap-y-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+  <section class="wrap py-16 md:py-24" aria-labelledby="attention">
+    <div class="grid grid-cols-1 items-center gap-x-16 gap-y-12 *:min-w-0 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
       <div>
         <h2 id="attention" class="title">See which agent needs you</h2>
         <p class="lede mt-4 max-w-[46ch]">
@@ -140,25 +142,25 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
           }
         </dl>
       </div>
-      <figure class="stage reveal grid items-start gap-4 sm:grid-cols-[292fr_336fr] md:gap-5">
-        <Shot
-          name="rail"
-          class="max-sm:mx-auto max-sm:max-w-[292px]"
-          sizes="(min-width: 1024px) 300px, (min-width: 640px) 42vw, 292px"
-          alt="Pine's sidebar: marlow-api waiting with a question, marlow-web needing approval, marlow-sdk done, harbor-infra working, tidepool with a failed command, handbook idle."
-        />
-        <Shot
-          name="notifications"
-          class="max-sm:mx-auto max-sm:max-w-[336px]"
-          sizes="(min-width: 1024px) 340px, (min-width: 640px) 48vw, 336px"
-          alt="The notification list: a permission request from marlow-web with Deny and Allow once, an agent in marlow-api that needs input, and an agent in marlow-sdk that finished."
-        />
+      <figure class="stage reveal mx-auto w-fit max-w-full">
+        <div class="grid max-w-[648px] items-start justify-items-center gap-4 sm:grid-cols-[292fr_336fr] md:gap-5">
+          <Shot
+            name="rail"
+            sizes="(min-width: 640px) 292px, 292px"
+            alt="Pine's sidebar: marlow-api waiting with a question, marlow-web needing approval, marlow-sdk done, harbor-infra working, tidepool with a failed command, handbook idle."
+          />
+          <Shot
+            name="notifications"
+            sizes="(min-width: 640px) 336px, 336px"
+            alt="The notification list: a permission request from marlow-web with Deny and Allow once, an agent in marlow-api that needs input, and an agent in marlow-sdk that finished."
+          />
+        </div>
       </figure>
     </div>
   </section>
 
-  <section class="wrap py-20 md:py-28" aria-labelledby="cli">
-    <h2 id="cli" class="title max-w-[24ch]">What an agent types is what you see</h2>
+  <section class="wrap py-16 md:py-24" aria-labelledby="cli">
+    <h2 id="cli" class="title">What an agent types is what you see</h2>
     <p class="lede mt-4 max-w-[58ch]">
       Every pane has a <code>pine</code> command. It works the same for any agent that can run a shell command, and
       whatever it does happens in the window in front of you.
@@ -166,8 +168,8 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
     <figure class="stage reveal pan mt-10">
       <Shot
         name="cli"
-        class="max-md:min-w-[46rem]"
-        sizes="(min-width: 1296px) 1136px, calc(100vw - 4rem)"
+        class="max-lg:min-w-[52rem]"
+        sizes="(min-width: 1296px) 1136px, (min-width: 1024px) calc(100vw - 8rem), 832px"
         alt="On the left an agent's session lists the pine commands it ran: process run, browse open, snapshot, click and get text. On the right the browser pane shows the page those commands opened and clicked."
       />
     </figure>
@@ -183,13 +185,14 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
     </dl>
   </section>
 
-  <section class="wrap py-20 md:py-28" aria-labelledby="control">
+  <section class="wrap py-16 md:py-24" aria-labelledby="control">
     <h2 id="control" class="title">You decide what an agent may do</h2>
-    <div class="mt-10 grid gap-x-8 gap-y-14 md:grid-cols-2">
+    <div class="mt-10 grid grid-cols-1 gap-x-8 gap-y-14 *:min-w-0 md:grid-cols-2">
       <figure>
-        <div class="stage reveal">
+        <div class="stage pan reveal w-fit max-w-full">
           <Shot
             name="approval-card"
+            class="max-sm:min-w-[26rem]"
             sizes="(min-width: 768px) 560px, calc(100vw - 4rem)"
             alt="An agent paused at pine browse open. The card reads: wants to drive the in-app browser, with Deny, Allow for this pane and Allow once."
           />
@@ -202,9 +205,10 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
         </figcaption>
       </figure>
       <figure>
-        <div class="stage reveal">
+        <div class="stage pan reveal w-fit max-w-full">
           <Shot
             name="sandbox-card"
+            class="max-sm:min-w-[26rem]"
             sizes="(min-width: 768px) 560px, calc(100vw - 4rem)"
             alt="A sandboxed shell. Reading an SSH key fails, and a request to api.stripe.com waits on a card with Deny, Allow until restart and Allow for this workspace."
           />
@@ -220,11 +224,12 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
     </div>
   </section>
 
-  <section class="wrap py-20 md:py-28" aria-labelledby="review">
-    <div class="grid items-center gap-x-16 gap-y-12 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
-      <figure class="stage reveal max-lg:order-last">
+  <section class="wrap py-16 md:py-24" aria-labelledby="review">
+    <div class="grid grid-cols-1 items-center gap-x-16 gap-y-12 *:min-w-0 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+      <figure class="stage pan reveal w-fit max-w-full max-lg:order-last">
         <Shot
           name="changes"
+          class="max-sm:min-w-[27rem]"
           sizes="(min-width: 1024px) 600px, calc(100vw - 4rem)"
           alt="The Git panel on the branch feat/idempotency-keys with two changed files and two untracked files, next to the diff of invoices.ts."
         />
@@ -239,7 +244,7 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
     </div>
   </section>
 
-  <section class="wrap py-20 md:py-28" aria-labelledby="customize">
+  <section class="wrap py-16 md:py-24" aria-labelledby="customize">
     <h2 id="customize" class="title">Shape it to how you work</h2>
     <div class="mt-10 grid grid-cols-1 gap-5 *:min-w-0 lg:grid-cols-12">
       <article class="rounded-2xl bg-card p-6 md:p-8 lg:col-span-7">
@@ -248,7 +253,7 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
           A view is one data file that Pine draws with its own components. An agent can write one, and it appears
           once you switch it on.
         </p>
-        <div class="reveal mt-7 grid items-end gap-4 sm:grid-cols-[438fr_292fr]">
+        <div class="reveal mt-7 grid max-w-[746px] items-end gap-4 sm:grid-cols-[438fr_292fr]">
           <Shot
             name="view-json"
             sizes="(min-width: 1024px) 370px, (min-width: 640px) 56vw, calc(100vw - 5.5rem)"
@@ -256,7 +261,6 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
           />
           <Shot
             name="view-rail"
-            class="max-sm:max-w-[292px]"
             sizes="(min-width: 1024px) 250px, (min-width: 640px) 36vw, 292px"
             alt="The section that file produces in the sidebar: each workspace with waiting, done, working, error or idle beside it, and a button for a new scratch workspace."
           />
@@ -301,7 +305,7 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
     </div>
   </section>
 
-  <section class="wrap py-20 md:py-28" aria-labelledby="also">
+  <section class="wrap py-16 md:py-24" aria-labelledby="also">
     <h2 id="also" class="title">Also built in</h2>
     <dl class="mt-10 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
       {
@@ -315,7 +319,7 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
     </dl>
   </section>
 
-  <section class="wrap pb-24 md:pb-32" aria-labelledby="get">
+  <section class="wrap pt-16 pb-24 md:pt-24 md:pb-32" aria-labelledby="get">
     <div class="grid items-center gap-x-12 gap-y-8 rounded-2xl bg-card p-7 md:p-12 lg:grid-cols-[minmax(0,1fr)_auto]">
       <div>
         <h2 id="get" class="title">Pine runs on Linux today</h2>
@@ -329,7 +333,9 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
         <pre class="codeblock mt-6 !bg-background max-w-xl" tabindex="0" aria-label="Commands to run the AppImage"><code>chmod +x {appImage}
 ./{appImage}</code></pre>
       </div>
-      <a class={buttonVariants({ size: 'xl' })} href={href('download/')}><Icon name="download" /> Download</a>
+      <a class:list={[buttonVariants({ size: 'xl' }), 'justify-self-start']} href={href('download/')}>
+        <Icon name="download" /> Download
+      </a>
     </div>
   </section>
 </Base>

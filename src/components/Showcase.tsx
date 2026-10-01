@@ -10,9 +10,9 @@ export interface Slide {
   image: ShotSources
 }
 
-const SIZES = '(min-width: 1296px) 1136px, calc(100vw - 4rem)'
+const SIZES = '(min-width: 1296px) 1136px, (min-width: 1024px) calc(100vw - 8rem), 960px'
 
-export function Showcase({ slides }: { slides: Slide[] }) {
+export function Showcase({ slides, backdrop }: { slides: Slide[]; backdrop: string }) {
   const [active, setActive] = useState(slides[0].id)
   const [touring, setTouring] = useState(true)
 
@@ -59,26 +59,31 @@ export function Showcase({ slides }: { slides: Slide[] }) {
           </TabsTrigger>
         ))}
       </TabsList>
-      <div className="stage pan mt-5 grid *:col-start-1 *:row-start-1">
-        {slides.map((slide, index) => (
-          <TabsContent key={slide.id} value={slide.id} className="text-base">
-            <img
-              className="shot slide-in max-md:min-w-[46rem]"
-              src={slide.image.src}
-              srcSet={slide.image.srcset}
-              sizes={SIZES}
-              width={slide.image.width}
-              height={slide.image.height}
-              alt={slide.alt}
-              loading={index === 0 ? 'eager' : 'lazy'}
-              fetchPriority={index === 0 ? 'high' : undefined}
-            />
-            <p className="sticky left-0 mx-auto mt-5 max-w-[64ch] text-center text-[0.9375rem] leading-relaxed text-muted-foreground">
-              {slide.caption}
-            </p>
-          </TabsContent>
-        ))}
+      <div className="stage stage-photo mt-5" style={{ backgroundImage: `url(${backdrop})` }}>
+        <div className="grid rounded-lg *:col-start-1 *:row-start-1 max-lg:overflow-x-auto max-lg:overscroll-x-contain">
+          {slides.map((slide, index) => (
+            <TabsContent key={slide.id} value={slide.id} className="text-base">
+              <img
+                className="shot slide-in max-lg:min-w-[60rem]"
+                src={slide.image.src}
+                srcSet={slide.image.srcset}
+                sizes={SIZES}
+                width={slide.image.width}
+                height={slide.image.height}
+                alt={slide.alt}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                fetchPriority={index === 0 ? 'high' : undefined}
+              />
+            </TabsContent>
+          ))}
+        </div>
       </div>
+      <p
+        aria-live="polite"
+        className="mx-auto mt-5 max-w-[64ch] text-center text-[0.9375rem] leading-relaxed text-muted-foreground"
+      >
+        {slides.find((slide) => slide.id === active)?.caption}
+      </p>
     </Tabs>
   )
 }
