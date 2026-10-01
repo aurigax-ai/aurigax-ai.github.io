@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { escapeHtml, html, safeHttpUrl } from '../../src/lib/html'
-import { parseManifest } from '../../src/lib/marketplace'
+import { escapeHtml, html } from '../../src/lib/html'
 import { parseRelease } from '../../src/lib/release'
-import { extensionCard, extensionList, releasePanel } from '../../src/lib/views'
+import { releasePanel } from '../../src/lib/views'
 
 const HOSTILE = '<img src=x onerror="alert(1)">&"\'</script>'
 
@@ -22,79 +21,6 @@ describe('html', () => {
   it('escapes numbers and plain strings alike', () => {
     expect(escapeHtml(5)).toBe('5')
     expect(escapeHtml(null)).toBe('')
-  })
-})
-
-describe('safeHttpUrl', () => {
-  it('accepts only http and https', () => {
-    expect(safeHttpUrl('https://example.com/x')).toBe('https://example.com/x')
-    expect(safeHttpUrl('http://example.com')).toBe('http://example.com/')
-    for (const bad of ['javascript:alert(1)', 'data:text/html,x', 'file:///etc/passwd', 'not a url', 5, null]) {
-      expect(safeHttpUrl(bad)).toBeNull()
-    }
-  })
-})
-
-describe('extensionCard', () => {
-  it('shows name, version, category, capabilities and contributions', () => {
-    const card = extensionCard(
-      parseManifest(
-        {
-          id: 'keeper',
-          name: 'Keeper',
-          version: '1.1.0',
-          category: 'tools',
-          description: 'Dashboard',
-          capabilities: ['notify'],
-          main: 'main.js',
-          contributes: { commands: [{ id: 'open', title: 'Keeper: Open Dashboard' }], sidebarItems: true },
-        },
-        'extensions/keeper',
-        'https://github.com/o/r',
-        'main',
-      ),
-    ).value
-    for (const text of ['Keeper', '1.1.0', 'Tools', 'Dashboard', 'notify', 'Commands', 'Keeper: Open Dashboard', 'Sidebar items', 'Runs a program on this computer']) {
-      expect(card).toContain(text)
-    }
-    expect(card).toContain('href="https://github.com/o/r/tree/main/extensions/keeper"')
-  })
-
-  it('renders hostile manifest text as text', () => {
-    const card = extensionCard(
-      parseManifest(
-        {
-          id: 'evil',
-          name: HOSTILE,
-          version: HOSTILE,
-          description: HOSTILE,
-          contributes: { commands: [{ title: HOSTILE }], panel: { title: HOSTILE } },
-        },
-        'extensions/evil',
-      ),
-    ).value
-    expect(card).not.toContain('<img')
-    expect(card).not.toContain('</script>')
-    expect(card).not.toContain('onerror="')
-    expect(card).toContain('&lt;img src=x onerror=&quot;alert(1)&quot;&gt;')
-  })
-
-  it('summarises long contribution lists', () => {
-    const commands = Array.from({ length: 9 }, (_, index) => ({ title: `Command ${index + 1}` }))
-    const card = extensionCard(parseManifest({ id: 'many', name: 'Many', version: '1', contributes: { commands } }, 'p')).value
-    expect(card).toContain('Command 6, and 3 more')
-    expect(card).not.toContain('Command 7')
-  })
-
-  it('shows an unavailable entry without breaking, escaping its path', () => {
-    const card = extensionCard({ status: 'unavailable', path: '<b>x</b>', reason: 'Its pine.json could not be read.' }).value
-    expect(card).toContain('data-unavailable')
-    expect(card).toContain('&lt;b&gt;x&lt;/b&gt;')
-    expect(card).toContain('This entry is unavailable.')
-  })
-
-  it('says so when the list is empty', () => {
-    expect(extensionList([]).value).toContain('No extension matches')
   })
 })
 

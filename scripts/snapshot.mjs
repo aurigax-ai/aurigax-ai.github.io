@@ -1,7 +1,6 @@
 import { writeFileSync } from 'node:fs'
 
 const APP_REPO = 'aurigax-ai/pine'
-const MARKETPLACE_REPO = 'aurigax-ai/pine-extensions'
 const dataDir = new URL('../src/data/', import.meta.url)
 const headers = { 'user-agent': 'pine-website-snapshot', accept: 'application/vnd.github+json' }
 if (process.env.GITHUB_TOKEN) headers.authorization = `Bearer ${process.env.GITHUB_TOKEN}`
@@ -14,25 +13,6 @@ async function json(url, withHeaders = false) {
 
 function write(name, value) {
   writeFileSync(new URL(name, dataDir), `${JSON.stringify(value, null, 2)}\n`)
-}
-
-async function snapshotMarketplace() {
-  const { default_branch: branch } = await json(`https://api.github.com/repos/${MARKETPLACE_REPO}`, true)
-  const raw = (path) => `https://raw.githubusercontent.com/${MARKETPLACE_REPO}/${branch}/${path}`
-  const marketplace = await json(raw('pine-marketplace.json'))
-  const manifests = {}
-  for (const path of Array.isArray(marketplace.extensions) ? marketplace.extensions : []) {
-    if (typeof path !== 'string') continue
-    manifests[path] = await json(raw(`${path}/pine.json`)).catch(() => null)
-  }
-  write('marketplace.snapshot.json', {
-    repo: MARKETPLACE_REPO,
-    branch,
-    fetchedAt: new Date().toISOString(),
-    marketplace,
-    manifests,
-  })
-  console.log(`marketplace: ${Object.keys(manifests).length} extension(s) from ${branch}`)
 }
 
 async function snapshotRelease() {
@@ -56,7 +36,7 @@ async function snapshotRelease() {
 }
 
 let failed = false
-for (const task of [snapshotMarketplace, snapshotRelease]) {
+for (const task of [snapshotRelease]) {
   try {
     await task()
   } catch (error) {

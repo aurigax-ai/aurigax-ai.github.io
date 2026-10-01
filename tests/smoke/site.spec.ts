@@ -2,10 +2,6 @@ import { readFileSync } from 'node:fs'
 import { type Page, expect, test } from '@playwright/test'
 
 const release = JSON.parse(readFileSync(new URL('../fixtures/release.json', import.meta.url), 'utf8'))
-const marketplace: Record<string, unknown> = JSON.parse(
-  readFileSync(new URL('../fixtures/marketplace.json', import.meta.url), 'utf8'),
-)
-const RAW = 'https://raw.githubusercontent.com/aurigax-ai/pine-extensions/main/'
 
 async function stubGitHub(page: Page): Promise<void> {
   await page.route('https://api.github.com/**', (route) => {
@@ -14,18 +10,12 @@ async function stubGitHub(page: Page): Promise<void> {
     }
     return route.fulfill({ status: 404, json: { message: 'Not Found' } })
   })
-  await page.route('https://raw.githubusercontent.com/**', (route) => {
-    const file = route.request().url().replace(RAW, '')
-    if (file in marketplace) return route.fulfill({ json: marketplace[file] })
-    return route.fulfill({ status: 404, body: '404: Not Found' })
-  })
 }
 
 async function failGitHub(page: Page): Promise<void> {
   await page.route('https://api.github.com/**', (route) =>
     route.fulfill({ status: 403, json: { message: 'API rate limit exceeded' } }),
   )
-  await page.route('https://raw.githubusercontent.com/**', (route) => route.abort('failed'))
 }
 
 function watchErrors(page: Page): string[] {
@@ -68,10 +58,13 @@ test.describe('with GitHub answering', () => {
     const panel = page.getByRole('tabpanel')
     await expect(page.getByRole('tab', { name: 'Run agents' })).toHaveAttribute('aria-selected', 'true')
     await expect(panel.getByRole('img')).toHaveAttribute('alt', /sidebar lists six projects/)
+    await expect(page.locator('astro-island[ssr]')).toHaveCount(0)
     await page.getByRole('tab', { name: 'Drive the browser' }).click()
+    await expect(panel).toHaveCount(1)
     await expect(panel.getByRole('img')).toHaveAttribute('alt', /browser pane shows the invoices page/)
     await expect(panel).toContainText('opens the page in a browser pane')
     await page.getByRole('tab', { name: 'Approve' }).press('Enter')
+    await expect(panel).toHaveCount(1)
     await expect(panel.getByRole('img')).toHaveAttribute('alt', /asks to drive the in-app browser/)
     expect(errors).toEqual([])
   })
@@ -94,41 +87,6 @@ test.describe('with GitHub answering', () => {
     await expect(page.locator('#release-status')).toHaveText('Read from GitHub just now.')
     expect(errors).toEqual([])
   })
-
-  test('extensions lists what the marketplace repository holds, as text, and filters it', async ({ page }) => {
-    const errors = watchErrors(page)
-    await stubGitHub(page)
-    await page.goto('extensions/')
-    const list = page.locator('#extensions')
-    const weather = list.locator('[data-extension="weather"]')
-    await expect(weather).toBeVisible()
-    await expect(weather.getByRole('heading', { level: 3 })).toHaveText(
-      'Weather <script>window.__pwned = true</script>',
-    )
-    await expect(weather).toContainText('Forecast chips for <b>every</b> pane')
-    await expect(weather.locator('b')).toHaveCount(0)
-    expect(await page.evaluate(() => '__pwned' in window)).toBe(false)
-    await expect(weather).toContainText('2.0.0')
-    await expect(weather).toContainText('notify')
-    await expect(weather).toContainText('Pane chips')
-    await expect(weather).toContainText('Holo decks')
-    await expect(weather).toContainText('Bridge')
-    await expect(list.locator('[data-extension="theme-pack"]')).toContainText('Aurora, Basalt')
-    await expect(list.locator('[data-unavailable]')).toHaveCount(2)
-    await expect(list.locator('[data-unavailable]').first()).toContainText('extensions/broken')
-    await expect(page.locator('#extensions-status')).toContainText('2 extensions, read from')
-
-    await page.getByLabel('Search extensions').fill('aurora')
-    await expect(list.locator('[data-extension]')).toHaveCount(1)
-    await expect(list.locator('[data-unavailable]')).toHaveCount(0)
-    await page.getByLabel('Search extensions').fill('zzz')
-    await expect(list.locator('[data-empty]')).toBeVisible()
-    await page.getByLabel('Search extensions').fill('')
-    await page.getByLabel('Category').selectOption({ label: 'Tools' })
-    await expect(list.locator('[data-extension]')).toHaveCount(1)
-    await expect(list.locator('[data-extension="weather"]')).toBeVisible()
-    expect(errors).toEqual([])
-  })
 })
 
 test.describe('with GitHub unreachable', () => {
@@ -148,18 +106,6 @@ test.describe('with GitHub unreachable', () => {
     )
     expect(errors).toEqual([])
   })
-
-  test('extensions keeps the list saved at build time and still filters it', async ({ page }) => {
-    const errors = watchErrors(page)
-    await failGitHub(page)
-    await page.goto('extensions/')
-    await expect(page.locator('#extensions-status')).toContainText('GitHub could not be reached')
-    const cards = page.locator('#extensions [data-extension]')
-    expect(await cards.count()).toBeGreaterThan(0)
-    await page.getByLabel('Search extensions').fill('no-such-extension-name')
-    await expect(page.locator('#extensions [data-empty]')).toBeVisible()
-    expect(errors).toEqual([])
-  })
 })
 
 test.describe('without JavaScript', () => {
@@ -172,12 +118,9 @@ test.describe('without JavaScript', () => {
     await expect(page.getByRole('heading', { name: 'Pine runs on Linux today' })).toBeVisible()
   })
 
-  test('download and extensions render the build-time snapshot', async ({ page }) => {
+  test('download renders the build-time snapshot', async ({ page }) => {
     await page.goto('download/')
     await expect(page.locator('#release [data-release]')).toBeVisible()
     await expect(page.getByRole('link', { name: 'All releases on GitHub' })).toBeVisible()
-    await page.goto('extensions/')
-    expect(await page.locator('#extensions [data-extension]').count()).toBeGreaterThan(0)
-    await expect(page.locator('#filters')).toBeHidden()
   })
 })

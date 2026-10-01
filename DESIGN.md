@@ -45,8 +45,8 @@ Page width 1200px. Sections are separated by 160 to 224px of space, not rules.
 ## Components
 
 shadcn/ui (`base-nova`, Base UI, Phosphor) in `src/components/ui`. Links that look like buttons use
-`buttonVariants`; the client-side templates in `src/lib/views.ts` use the same variants so the
-download and extensions pages match. One label per action: the download action is always
+`buttonVariants`; the client-side template in `src/lib/views.ts` uses the same variants so the
+download page matches. One label per action: the download action is always
 "Download".
 
 ## Motion

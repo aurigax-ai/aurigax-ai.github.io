@@ -59,7 +59,7 @@ export function Showcase({ slides }: { slides: Slide[] }) {
           </TabsTrigger>
         ))}
       </TabsList>
-      <div className="stage pan mt-5">
+      <div className="stage pan mt-5 grid *:col-start-1 *:row-start-1">
         {slides.map((slide, index) => (
           <TabsContent key={slide.id} value={slide.id} className="text-base">
             <img

@@ -1,13 +1,12 @@
 # pine-website
 
 The website for [Pine](https://github.com/aurigax-ai/pine), a terminal-first workspace for Linux.
-It is a static site with three pages:
+It is a static site with two pages:
 
 | Page | What it shows |
 |---|---|
 | `/` | What Pine is, with captures of the real app |
 | `/download/` | The latest release, its files and sizes, and install steps |
-| `/extensions/` | The extensions in the public marketplace, read from its repository |
 
 Live at https://aurigax-ai.github.io/pine-website/.
 
@@ -43,25 +42,14 @@ script. Design rules are in `DESIGN.md`.
 
 ## How data is loaded
 
-Both data pages render without JavaScript from a snapshot saved at build time, then replace it with
-live data when JavaScript runs.
+The download page renders without JavaScript from a snapshot saved at build time, then replaces it
+with live data when JavaScript runs.
 
 **Download** (`src/client/download.ts`) asks the GitHub REST API for
 `repos/aurigax-ai/pine/releases/latest`, unauthenticated, and caches the answer in `sessionStorage`
 for 30 minutes. `parseRelease` (`src/lib/release.ts`) accepts only a release whose page and file
 links belong to that repository. If the call fails or is rate-limited, the page keeps the snapshot
 and points at the releases page.
-
-**Extensions** (`src/client/extensions.ts`) reads `pine-marketplace.json` and each listed
-extension's `pine.json` from `raw.githubusercontent.com/aurigax-ai/pine-extensions/main/`. If `main`
-has no marketplace file it asks the API for the default branch. `src/lib/marketplace.ts` parses
-defensively:
-
-- A missing or malformed manifest becomes an "unavailable" entry; the rest still show.
-- Contribution labels come from the manifest's own keys (`paneChips` becomes "Pane chips"), so a new
-  kind of contribution appears without a change here.
-- Every string from a manifest is escaped by the `html` template tag (`src/lib/html.ts`) and shown
-  as text. Links are kept only when they are http or https.
 
 The snapshot lives in `src/data/*.snapshot.json`. `pnpm snapshot` rewrites it, and the Pages workflow
 runs it before each build. A failed fetch keeps the committed files.

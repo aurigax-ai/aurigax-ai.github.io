@@ -217,14 +217,6 @@
     text-decoration-color: var(--brand);
   }
 
-  .link-arrow svg {
-    transition: transform 200ms var(--ease-out);
-  }
-
-  .link-arrow:hover svg {
-    transform: translateX(3px);
-  }
-
   .stage {
     background: var(--stage);
     border-radius: var(--radius-2xl);

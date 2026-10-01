@@ -6,7 +6,7 @@ import { APP_REPO_URL } from '../lib/site'
 import Icon from './Icon.astro'
 
 interface Props {
-  current: 'home' | 'download' | 'extensions'
+  current: 'home' | 'download'
 }
 
 const { current } = Astro.props
@@ -19,13 +19,6 @@ const { current } = Astro.props
       Pine
     </a>
     <nav aria-label="Main" class="flex items-center gap-1 text-[0.9375rem]">
-      <a
-        href={href('extensions/')}
-        aria-current={current === 'extensions' ? 'page' : undefined}
-        class="rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground"
-      >
-        Extensions
-      </a>
       <a
         href={APP_REPO_URL}
         rel="noopener"

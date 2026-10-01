@@ -7,7 +7,7 @@ import Base from '../layouts/Base.astro'
 import { href } from '../lib/paths'
 import { formatDate } from '../lib/release'
 import { shotSources } from '../lib/shots'
-import { APP_REPO_URL } from '../lib/site'
+import { APP_REPO_URL, SDK_REPO_URL } from '../lib/site'
 import { snapshotRelease } from '../lib/snapshot'
 
 const slides: Slide[] = [
@@ -276,8 +276,8 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
   "contributes": { "paneChips": true }
 }`}</code></pre>
         <p class="mt-6">
-          <a class="link link-arrow inline-flex items-center gap-1.5" href={href('extensions/')}>
-            Extensions <Icon name="arrow-right" size={16} />
+          <a class="link inline-flex items-center gap-1.5" href={SDK_REPO_URL} rel="noopener">
+            Extension SDK <Icon name="arrow-up-right" size={15} />
           </a>
         </p>
       </article>
