@@ -1,4 +1,4 @@
-import { mkdirSync, readdirSync } from 'node:fs'
+import { mkdirSync, readdirSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import sharp from 'sharp'
 
@@ -9,34 +9,36 @@ if (!source) {
 }
 
 const target = new URL('../src/assets/shots/', import.meta.url).pathname
-const publicDir = new URL('../public/', import.meta.url).pathname
-const THEMES = { adeberry: 'dark', 'pine-light': 'light' }
-const SCENES = ['hero', 'blocks', 'browser', 'diff', 'extensions', 'approval']
-const CROPS = {
-  sandbox: { name: 'sandbox', left: 900, top: 76, width: 1460, height: 560 },
+const DENSITY = 2
+const SHOTS = {
+  hero: { from: 'hero' },
+  browser: { from: 'browser' },
+  review: { from: 'review' },
+  approval: { from: 'approval' },
+  rail: { from: 'hero', crop: [0, 36, 292, 524] },
+  notifications: { from: 'notifications', crop: [984, 40, 336, 460] },
+  cli: { from: 'browser', crop: [292, 36, 1148, 420] },
+  'approval-card': { from: 'approval-card', crop: [292, 36, 588, 444] },
+  'sandbox-card': { from: 'sandbox-card', crop: [292, 36, 588, 444] },
+  changes: { from: 'review', crop: [866, 36, 574, 664] },
+  'view-json': { from: 'view', crop: [292, 36, 438, 470] },
+  'view-rail': { from: 'view', crop: [0, 690, 292, 210] },
+  themes: { from: 'appearance', crop: [600, 56, 740, 434] },
 }
 
+rmSync(target, { recursive: true, force: true })
 mkdirSync(target, { recursive: true })
 const files = readdirSync(source)
 
-for (const [theme, mode] of Object.entries(THEMES)) {
-  for (const scene of SCENES) {
-    const file = `${scene}-${theme}.png`
-    if (!files.includes(file)) throw new Error(`missing ${file}`)
-    await sharp(join(source, file)).png({ compressionLevel: 9 }).toFile(join(target, `${scene}-${mode}.png`))
+for (const [name, shot] of Object.entries(SHOTS)) {
+  const file = `${shot.from}.png`
+  if (!files.includes(file)) throw new Error(`missing ${file}`)
+  let image = sharp(join(source, file))
+  if (shot.crop) {
+    const [left, top, width, height] = shot.crop.map((value) => value * DENSITY)
+    image = image.extract({ left, top, width, height })
   }
-  for (const [scene, crop] of Object.entries(CROPS)) {
-    const { name, ...region } = crop
-    await sharp(join(source, `${scene}-${theme}.png`))
-      .extract(region)
-      .png({ compressionLevel: 9 })
-      .toFile(join(target, `${name}-${mode}.png`))
-  }
+  await image.png({ compressionLevel: 9 }).toFile(join(target, `${name}.png`))
 }
 
-await sharp(join(source, 'hero-adeberry.png'))
-  .resize(1200, 630, { fit: 'cover', position: 'left top' })
-  .png({ compressionLevel: 9 })
-  .toFile(join(publicDir, 'og.png'))
-
-console.log(`imported captures into ${target}`)
+console.log(`imported ${Object.keys(SHOTS).length} captures into ${target}`)
