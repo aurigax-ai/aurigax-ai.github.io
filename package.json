@@ -1,0 +1,33 @@
+{
+  "name": "pine-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.10.0",
+  "scripts": {
+    "dev": "astro dev",
+    "snapshot": "node scripts/snapshot.mjs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "test": "vitest run",
+    "test:smoke": "playwright test",
+    "check": "pnpm typecheck && pnpm test && pnpm build && pnpm test:smoke",
+    "shots": "node scripts/import-shots.mjs"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@fontsource-variable/geist": "5.3.0",
+    "@fontsource-variable/geist-mono": "5.3.0",
+    "@phosphor-icons/core": "2.1.1",
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "26.6.3",
+    "astro": "7.3.5",
+    "sharp": "0.35.5",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "vitest": "5.0.3"
+  },
+  "description": "Website for Pine, a terminal-first workspace"
+}

@@ -1,0 +1,26 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [
+    ".astro/types.d.ts",
+    "src",
+    "tests",
+    "scripts",
+    "playwright.config.ts",
+    "vitest.config.ts"
+  ],
+  "exclude": [
+    "dist",
+    "capture"
+  ],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "lib": [
+      "ES2023",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "node"
+    ]
+  }
+}
