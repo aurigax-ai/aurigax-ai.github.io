@@ -1,0 +1,19 @@
+{
+  "tag_name": "v9.8.7",
+  "html_url": "https://github.com/aurigax-ai/pine/releases/tag/v9.8.7",
+  "published_at": "2027-03-04T10:00:00Z",
+  "draft": false,
+  "prerelease": false,
+  "assets": [
+    {
+      "name": "pine-9.8.7-linux-x64.tar.gz",
+      "size": 150000000,
+      "browser_download_url": "https://github.com/aurigax-ai/pine/releases/download/v9.8.7/pine-9.8.7-linux-x64.tar.gz"
+    },
+    {
+      "name": "pine-9.8.7.AppImage",
+      "size": 152500000,
+      "browser_download_url": "https://github.com/aurigax-ai/pine/releases/download/v9.8.7/pine-9.8.7.AppImage"
+    }
+  ]
+}
