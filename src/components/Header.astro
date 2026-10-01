@@ -1,5 +1,6 @@
 ---
 import iconUrl from '../assets/icon.svg?url'
+import { buttonVariants } from '../components/ui/button'
 import { href } from '../lib/paths'
 import { APP_REPO_URL } from '../lib/site'
 import Icon from './Icon.astro'
@@ -9,38 +10,36 @@ interface Props {
 }
 
 const { current } = Astro.props
-const links = [
-  { id: 'download', label: 'Download', to: href('download/') },
-  { id: 'extensions', label: 'Extensions', to: href('extensions/') },
-]
 ---
 
-<header class="sticky top-0 z-10 border-b border-line bg-bg">
+<header class="site-header sticky top-0 z-10">
   <div class="wrap flex h-16 items-center justify-between gap-6">
-    <a href={href('')} class="flex items-center gap-2.5 text-lg font-semibold tracking-tight" aria-label="Pine home">
-      <img src={iconUrl} alt="" width="28" height="28" class="rounded-[6px]" />
+    <a href={href('')} class="flex items-center gap-2.5 text-[1.0625rem] font-semibold tracking-tight" aria-label="Pine home">
+      <img src={iconUrl} alt="" width="26" height="26" class="rounded-md" />
       Pine
     </a>
-    <nav aria-label="Main" class="flex items-center gap-1 text-[0.95rem] sm:gap-2">
-      {
-        links.map((link) => (
-          <a
-            href={link.to}
-            aria-current={current === link.id ? 'page' : undefined}
-            class="rounded-[8px] px-3 py-2 text-muted transition-colors hover:text-fg aria-[current=page]:text-fg aria-[current=page]:font-medium"
-          >
-            {link.label}
-          </a>
-        ))
-      }
+    <nav aria-label="Main" class="flex items-center gap-1 text-[0.9375rem]">
+      <a
+        href={href('extensions/')}
+        aria-current={current === 'extensions' ? 'page' : undefined}
+        class="rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground"
+      >
+        Extensions
+      </a>
       <a
         href={APP_REPO_URL}
         rel="noopener"
-        class="flex items-center gap-1.5 rounded-[8px] px-3 py-2 text-muted transition-colors hover:text-fg"
+        class="flex items-center gap-1.5 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:text-foreground"
       >
         <Icon name="github" />
-        <span class="hidden sm:inline">GitHub</span>
-        <span class="sr-only sm:hidden">GitHub</span>
+        <span class="max-sm:sr-only">GitHub</span>
+      </a>
+      <a
+        href={href('download/')}
+        aria-current={current === 'download' ? 'page' : undefined}
+        class:list={[buttonVariants({ size: 'lg' }), 'ml-2 px-3.5']}
+      >
+        Download
       </a>
     </nav>
   </div>

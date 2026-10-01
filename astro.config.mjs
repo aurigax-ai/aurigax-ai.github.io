@@ -1,3 +1,4 @@
+import react from '@astrojs/react'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
@@ -8,5 +9,6 @@ export default defineConfig({
   base,
   trailingSlash: 'always',
   build: { format: 'directory' },
+  integrations: [react()],
   vite: { plugins: [tailwindcss()] },
 })

@@ -39,7 +39,7 @@ test.describe('with GitHub answering', () => {
     const errors = watchErrors(page)
     await stubGitHub(page)
     await page.goto('./')
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('The terminal workspace for coding agents')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('One workspace for you and every coding agent you run.')
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       'href',
       'https://aurigax-ai.github.io/pine-website/',
@@ -58,6 +58,21 @@ test.describe('with GitHub answering', () => {
     }
     await page.getByRole('main').getByRole('link', { name: 'Download' }).first().click()
     await expect(page).toHaveURL(/\/pine-website\/download\/$/)
+    expect(errors).toEqual([])
+  })
+
+  test('the hero tabs swap the capture and its caption', async ({ page }) => {
+    const errors = watchErrors(page)
+    await stubGitHub(page)
+    await page.goto('./')
+    const panel = page.getByRole('tabpanel')
+    await expect(page.getByRole('tab', { name: 'Run agents' })).toHaveAttribute('aria-selected', 'true')
+    await expect(panel.getByRole('img')).toHaveAttribute('alt', /sidebar lists six projects/)
+    await page.getByRole('tab', { name: 'Drive the browser' }).click()
+    await expect(panel.getByRole('img')).toHaveAttribute('alt', /browser pane shows the invoices page/)
+    await expect(panel).toContainText('opens the page in a browser pane')
+    await page.getByRole('tab', { name: 'Approve' }).press('Enter')
+    await expect(panel.getByRole('img')).toHaveAttribute('alt', /asks to drive the in-app browser/)
     expect(errors).toEqual([])
   })
 
@@ -149,6 +164,13 @@ test.describe('with GitHub unreachable', () => {
 
 test.describe('without JavaScript', () => {
   test.use({ javaScriptEnabled: false })
+
+  test('home shows the first capture and every section', async ({ page }) => {
+    await page.goto('./')
+    await expect(page.getByRole('tabpanel').getByRole('img')).toHaveAttribute('alt', /sidebar lists six projects/)
+    await expect(page.getByRole('heading', { name: 'See which agent needs you' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Pine runs on Linux today' })).toBeVisible()
+  })
 
   test('download and extensions render the build-time snapshot', async ({ page }) => {
     await page.goto('download/')

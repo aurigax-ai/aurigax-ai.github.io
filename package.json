@@ -13,21 +13,35 @@
     "test": "vitest run",
     "test:smoke": "playwright test",
     "check": "pnpm typecheck && pnpm test && pnpm build && pnpm test:smoke",
-    "shots": "node scripts/import-shots.mjs"
+    "shots": "node scripts/import-shots.mjs",
+    "social": "node scripts/social.mjs"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "@astrojs/react": "^7.0.0",
     "@fontsource-variable/geist": "5.3.0",
     "@fontsource-variable/geist-mono": "5.3.0",
     "@phosphor-icons/core": "2.1.1",
     "@playwright/test": "1.63.0",
     "@tailwindcss/vite": "4.3.3",
     "@types/node": "26.6.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "astro": "7.3.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "sharp": "0.35.5",
     "tailwindcss": "4.3.3",
     "typescript": "6.0.3",
     "vitest": "5.0.3"
   },
-  "description": "Website for Pine, a terminal-first workspace"
+  "description": "Website for Pine, a terminal-first workspace",
+  "dependencies": {
+    "@base-ui/react": "^1.8.0",
+    "@phosphor-icons/react": "^2.1.10",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "shadcn": "^4.21.0",
+    "tailwind-merge": "^3.7.0"
+  }
 }
