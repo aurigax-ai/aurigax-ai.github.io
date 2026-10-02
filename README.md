@@ -83,10 +83,12 @@ approval cards you see are the app's own.
 
 Do not commit the two capture files in the app repository.
 
-The picture behind the hero capture (`src/assets/stage.webp`) is not a capture. Its source,
-`capture/backgrounds/abstract-boughs.png`, was made with an image generator (blurred pine boughs in
-mist) and `node scripts/wash.mjs <source> src/assets/stage.webp [white|color|mono]` fades it and
-adds film grain. To change the look, edit the numbers at the top of that script and run it again.
+The pictures behind the captures are not captures. Their sources in `capture/backgrounds/` were
+made with an image generator (blurred pine boughs and trunks in mist), and
+`node scripts/wash.mjs <source> <output.webp> [white|color|mono] [width]` fades each one and adds
+film grain: `src/assets/stage.webp` at 2000 wide for the hero, `src/assets/stages/*.webp` at 1400
+for the other panels. To change the look, edit the numbers at the top of that script and run it
+again.
 
 ## Deploy
 

@@ -29,12 +29,12 @@ test.describe('with GitHub answering', () => {
     const errors = watchErrors(page)
     await stubGitHub(page)
     await page.goto('./')
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('One workspace for you and every coding agent you run.')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('One workspace for you and your coding agents.')
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       'href',
       'https://aurigax-ai.github.io/',
     )
-    const images = page.locator('main img')
+    const images = page.locator('main img:not([alt=""])')
     expect(await images.count()).toBeGreaterThanOrEqual(7)
     for (const image of await images.all()) {
       expect(await image.getAttribute('alt')).toBeTruthy()
@@ -62,7 +62,7 @@ test.describe('with GitHub answering', () => {
     await page.getByRole('tab', { name: 'Drive the browser' }).click()
     await expect(panel).toHaveCount(1)
     await expect(panel.getByRole('img')).toHaveAttribute('alt', /browser pane shows the invoices page/)
-    await expect(page.getByText('opens the page in a browser pane')).toBeVisible()
+    await expect(page.getByText('opens its page in a browser inside Pine')).toBeVisible()
     await page.getByRole('tab', { name: 'Approve' }).press('Enter')
     await expect(panel).toHaveCount(1)
     await expect(panel.getByRole('img')).toHaveAttribute('alt', /asks to drive the in-app browser/)
@@ -114,8 +114,8 @@ test.describe('without JavaScript', () => {
   test('home shows the first capture and every section', async ({ page }) => {
     await page.goto('./')
     await expect(page.getByRole('tabpanel').getByRole('img')).toHaveAttribute('alt', /sidebar lists six projects/)
-    await expect(page.getByRole('heading', { name: 'See which agent needs you' })).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'Pine runs on Linux today' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'See which agents need you' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Download Pine for Linux' })).toBeVisible()
   })
 
   test('download renders the build-time snapshot', async ({ page }) => {

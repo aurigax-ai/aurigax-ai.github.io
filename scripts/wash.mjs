@@ -1,6 +1,6 @@
 import sharp from 'sharp'
 
-const [source, target, grainKind = 'white'] = process.argv.slice(2)
+const [source, target, grainKind = 'white', widthArg] = process.argv.slice(2)
 const GRAINS = {
   white: { speckle: (noise) => noise.greyscale().linear(2, -256), blend: 'screen' },
   color: { speckle: (noise) => noise, blend: 'overlay' },
@@ -8,12 +8,12 @@ const GRAINS = {
 }
 const grainStyle = GRAINS[grainKind]
 if (!source || !target || !grainStyle) {
-  console.error('usage: node scripts/wash.mjs <image> <output.webp> [white|color|mono]')
+  console.error('usage: node scripts/wash.mjs <image> <output.webp> [white|color|mono] [width]')
   process.exit(1)
 }
 
-const WIDTH = 2000
-const HEIGHT = 1250
+const WIDTH = Number(widthArg ?? 2000)
+const HEIGHT = Math.round((WIDTH * 5) / 8)
 const SATURATION = 0.75
 const CONTRAST = 0.78
 const LIFT = 28

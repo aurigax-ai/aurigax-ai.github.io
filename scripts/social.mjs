@@ -22,7 +22,7 @@ const page = `<!doctype html>
   .shot { position: absolute; left: 6vw; top: 55vh; width: 108vw; border-radius: 1vw; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.1), 0 3vw 6vw rgb(0 0 0 / 0.6); }
 </style>
 <header><img src="${icon}" alt="" />Pine</header>
-<h1>One workspace for you and every coding agent you run.</h1>
+<h1>One workspace for you and your coding agents.</h1>
 <img class="shot" src="${hero}" alt="" />`
 
 const browser = await chromium.launch({ channel: process.env.PLAYWRIGHT_CHANNEL ?? 'chrome' })

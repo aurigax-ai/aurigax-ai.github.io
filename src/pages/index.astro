@@ -1,6 +1,7 @@
 ---
 import backdrop from '../assets/stage.webp'
 import Icon from '../components/Icon.astro'
+import PhotoStage from '../components/PhotoStage.astro'
 import Shot from '../components/Shot.astro'
 import { Showcase, type Slide } from '../components/Showcase'
 import { buttonVariants } from '../components/ui/button'
@@ -16,7 +17,7 @@ const slides: Slide[] = [
     id: 'agents',
     label: 'Run agents',
     caption:
-      'Six projects in one window. The sidebar says which agent is working, which is waiting on you and which is done.',
+      'Several agent sessions in one window. The sidebar shows which is working, which is waiting for you and which is done.',
     alt: 'The Pine window. The sidebar lists six projects in two groups with their agent states. In marlow-api an agent has made a change and asks whether to apply a migration, and the diff of its change is open beside it.',
     image: await shotSources('hero'),
   },
@@ -24,72 +25,77 @@ const slides: Slide[] = [
     id: 'browser',
     label: 'Drive the browser',
     caption:
-      'An agent starts the dev server in a tab, opens the page in a browser pane and clicks through it with the pine command.',
+      'An agent starts a server, opens its page in a browser inside Pine and clicks through it with the pine command.',
     alt: 'An agent session in marlow-web that ran pine process run, pine browse open, snapshot and click. Beside it a browser pane shows the invoices page the agent opened.',
     image: await shotSources('browser'),
   },
   {
     id: 'review',
     label: 'Review changes',
-    caption: 'Changed files and the diff sit beside the shell, for you and for the agent that made them.',
+    caption: "Read an agent's changed files and the diff beside its shell before anything is committed.",
     alt: 'A terminal with git status, the Git panel listing two changed and two untracked files, and the diff of invoices.ts.',
     image: await shotSources('review'),
   },
   {
     id: 'approve',
     label: 'Approve',
-    caption: 'A call that needs a permission the pane lacks waits on a card until you answer.',
+    caption: 'When an agent needs a permission it lacks, Pine pauses it until you allow or deny the request.',
     alt: 'An agent session paused at pine browse open. A card under the terminal asks to drive the in-app browser, with Deny, Allow for this pane and Allow once.',
     image: await shotSources('approval'),
   },
 ]
 
-const states = [
-  { name: 'Working', shape: 'rounded-full bg-state-working', body: 'The agent is running. Nothing for you to do.' },
-  {
-    name: 'Waiting',
-    shape: 'rounded-full bg-state-waiting',
-    body: 'It asked a question or needs a permission. Its pane gets a ring.',
-  },
-  {
-    name: 'Done',
-    shape: 'rounded-full bg-state-done',
-    body: 'It finished while you were elsewhere. The row keeps an unread count.',
-  },
-  { name: 'Failed', shape: 'rounded-[2px] bg-state-waiting', body: 'A command exited with an error.' },
-]
-
 const commands = [
-  { command: 'pine process run', result: 'A tab you can watch' },
-  { command: 'pine browse open', result: 'A browser pane the agent drives' },
-  { command: 'pine git open', result: 'A diff pane beside the shell' },
-  { command: 'pine state waiting', result: 'The ring on the pane and the mark in the sidebar' },
+  {
+    command: 'pine process run "node server.js" --name web',
+    result: 'Runs the server in a new tab that you can watch or stop.',
+    shot: 'see-tab',
+    alt: 'A terminal pane with a second tab named web beside the agent session that started it.',
+  },
+  {
+    command: 'pine browse open http://127.0.0.1:4173/invoices',
+    result: "Opens the page in Pine's browser, where the agent can read and click it.",
+    shot: 'see-browser',
+    alt: 'A browser pane showing the invoices page at the address the agent opened.',
+  },
+  {
+    command: 'pine git open src/routes/invoices.ts',
+    result: "Opens the file's changes as a diff beside the shell.",
+    shot: 'see-diff',
+    alt: 'A diff pane with removed and added lines of invoices.ts.',
+  },
+  {
+    command: 'pine state waiting "Apply migration 0014?"',
+    result: 'Marks the project as waiting, shows the question in the sidebar and rings the terminal.',
+    shot: 'see-state',
+    alt: 'The sidebar row for marlow-api showing the question, next to its pane outlined in pink.',
+  },
 ]
 
 const also = [
   {
-    title: 'Command blocks',
-    body: 'Every command is a block. Select one to copy it, rerun it or send its output to an agent.',
+    title: 'Commands keep their output',
+    body: 'Each command and its output are one unit. Select it to copy it, rerun it or send it to an agent.',
   },
   {
-    title: 'Workspaces come back',
-    body: 'Layout and scrollback are saved as you work. After a restart each pane returns idle in its folder.',
+    title: 'Your layout comes back',
+    body: 'After a restart Pine restores your layout and terminal history. Running processes do not come back.',
   },
   {
-    title: 'Their own windows',
-    body: 'Move a workspace or a single pane to another window. Its shells keep running through the move.',
+    title: 'Separate windows',
+    body: 'Move a project or a single terminal to another window. Its shells keep running through the move.',
   },
   {
-    title: 'An editor with language servers',
-    body: 'Files open in a Monaco editor. Language servers arrive as extensions, per language.',
+    title: 'Quick code editing',
+    body: 'Files open in a Monaco editor. Diagnostics and completion come per language, as extensions.',
   },
   {
-    title: 'An assistant on a model you pick',
-    body: 'Chat, command suggestions and completions through a local or hosted model. Off until you choose one.',
+    title: 'An optional assistant',
+    body: 'Chat, command suggestions and completions on a local or hosted AI model. It stays off until you pick one.',
   },
   {
-    title: 'Settings sync you own',
-    body: 'Mirror settings to a folder you control. Secrets and permission grants never sync.',
+    title: 'Sync settings to your own folder',
+    body: 'Copy settings to a folder you control. Secrets and agent permissions stay on this machine.',
   },
 ]
 
@@ -99,15 +105,15 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
 
 <Base
   title="Pine: one workspace for you and your coding agents"
-  description="Pine is a terminal for Linux where Claude Code, Codex and your own shell share panes, a browser, diffs and approvals."
+  description="Pine is a Linux terminal where you run coding agents beside your shell, then watch, guide and approve their work."
   current="home"
 >
   <link slot="head" rel="preload" as="image" type="image/webp" href={backdrop.src} />
   <section class="wrap pt-12 pb-16 md:pt-20 md:pb-24" aria-labelledby="claim">
-    <h1 id="claim" class="display rise max-w-[21ch]">One workspace for you and every coding agent you run.</h1>
+    <h1 id="claim" class="display rise max-w-[21ch]">One workspace for you and your coding agents.</h1>
     <p class="lede rise mt-5 max-w-[54ch]" style="--rise: 1">
-      Pine is a terminal for Linux where Claude Code, Codex and your own shell share panes, a browser, diffs and
-      approvals.
+      Pine is a Linux terminal where you run coding agents beside your shell, then watch, guide and approve their
+      work. It brings no agent of its own: use Claude Code, Codex or any CLI.
     </p>
     <div class="rise mt-8 flex flex-wrap gap-3" style="--rise: 2">
       <a class={buttonVariants({ size: 'xl' })} href={href('download/')}><Icon name="download" /> Download</a>
@@ -115,7 +121,7 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
         <Icon name="github" /> Source
       </a>
     </div>
-    <div class="rise mt-12 md:mt-16" style="--rise: 3">
+    <div class="rise hero-window mt-12 md:mt-16" style="--rise: 3">
       <Showcase client:load slides={slides} backdrop={backdrop.src} />
     </div>
   </section>
@@ -123,135 +129,150 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
   <section class="wrap py-16 md:py-24" aria-labelledby="attention">
     <div class="grid grid-cols-1 items-center gap-x-16 gap-y-12 *:min-w-0 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
       <div>
-        <h2 id="attention" class="title">See which agent needs you</h2>
+        <h2 id="attention" class="title">See which agents need you</h2>
         <p class="lede mt-4 max-w-[46ch]">
-          Each pane reports what its agent is doing through the agent's own hooks. The sidebar and the notification
-          list show it for every project at once.
+          Each agent reports whether it is working, waiting for you or done. The sidebar and the notifications show
+          that for every project at once.
         </p>
-        <dl class="mt-9 grid gap-5">
-          {
-            states.map((state) => (
-              <div class="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-x-2">
-                <span class:list={['mt-[0.45rem] size-2.5', state.shape]} aria-hidden="true" />
-                <div>
-                  <dt class="font-medium">{state.name}</dt>
-                  <dd class="mt-0.5 text-muted-foreground">{state.body}</dd>
-                </div>
-              </div>
-            ))
-          }
-        </dl>
       </div>
-      <figure class="stage reveal mx-auto w-fit max-w-full">
+      <PhotoStage photo="boughs-left" class="reveal mx-auto w-fit max-w-full">
         <div class="grid max-w-[648px] items-start justify-items-center gap-4 sm:grid-cols-[292fr_336fr] md:gap-5">
           <Shot
             name="rail"
+            class="drift-slow"
             sizes="(min-width: 640px) 292px, 292px"
             alt="Pine's sidebar: marlow-api waiting with a question, marlow-web needing approval, marlow-sdk done, harbor-infra working, tidepool with a failed command, handbook idle."
           />
           <Shot
             name="notifications"
+            class="drift-fast"
             sizes="(min-width: 640px) 336px, 336px"
             alt="The notification list: a permission request from marlow-web with Deny and Allow once, an agent in marlow-api that needs input, and an agent in marlow-sdk that finished."
           />
         </div>
-      </figure>
+      </PhotoStage>
     </div>
   </section>
 
   <section class="wrap py-16 md:py-24" aria-labelledby="cli">
-    <h2 id="cli" class="title">What an agent types is what you see</h2>
+    <h2 id="cli" class="title">Agents use the same app you do</h2>
     <p class="lede mt-4 max-w-[58ch]">
-      Every pane has a <code>pine</code> command. It works the same for any agent that can run a shell command, and
-      whatever it does happens in the window in front of you.
+      Every terminal in Pine has a <code>pine</code> command. An agent uses it to open tabs, a browser and diffs,
+      and you watch each one appear.
     </p>
-    <figure class="stage reveal pan mt-10">
-      <Shot
-        name="cli"
-        class="max-lg:min-w-[52rem]"
-        sizes="(min-width: 1296px) 1136px, (min-width: 1024px) calc(100vw - 8rem), 832px"
-        alt="On the left an agent's session lists the pine commands it ran: process run, browse open, snapshot, click and get text. On the right the browser pane shows the page those commands opened and clicked."
-      />
-    </figure>
-    <dl class="mt-9 grid gap-x-10 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
+    <ul class="mt-10 grid grid-cols-1 gap-5 *:min-w-0 lg:grid-cols-2">
       {
         commands.map((item) => (
-          <div>
-            <dt class="font-mono text-[0.875rem]">{item.command}</dt>
-            <dd class="mt-1.5 text-muted-foreground">{item.result}</dd>
-          </div>
+          <li class="lift overflow-clip rounded-2xl bg-card">
+            <div class="p-6 pb-5">
+              <p class="mono truncate">
+                <span class="text-brand" aria-hidden="true">$ </span>
+                {item.command}
+              </p>
+              <p class="body mt-1.5 text-muted-foreground">{item.result}</p>
+            </div>
+            <div class="reveal pl-6">
+              <Shot
+                name={item.shot}
+                class="rounded-none! rounded-tl-lg! shadow-none!"
+                sizes="(min-width: 1024px) 574px, calc(100vw - 4rem)"
+                alt={item.alt}
+              />
+            </div>
+          </li>
         ))
       }
-    </dl>
+    </ul>
+  </section>
+
+  <section class="wrap py-16 md:py-24" aria-labelledby="point">
+    <h2 id="point" class="title">Show an agent exactly what you mean</h2>
+    <p class="lede mt-4 max-w-[60ch]">
+      Select code, terminal output or an element on a page and add a note. The agent gets the exact location, a
+      screenshot and, from a page, its console errors.
+    </p>
+    <div class="mt-10 grid grid-cols-1 gap-5 *:min-w-0 lg:grid-cols-2">
+      <figure class="h-full">
+        <PhotoStage photo="boughs-corners" class="captioned h-full slide-from-left">
+          <div class="pan rounded-lg">
+            <Shot
+              name="select"
+              class="max-sm:min-w-[24rem]"
+              sizes="(min-width: 1024px) 574px, calc(100vw - 4rem)"
+              alt="Lines selected in idempotency.ts and a Send to agent card over them: the file and line range, a note asking whether a replay should check that the key has not expired, and Claude Code chosen as the agent."
+            />
+          </div>
+          <figcaption class="stage-caption">
+            <h3 class="subtitle">From a file</h3>
+            <p class="body">Sends the file path, the selected lines and your note.</p>
+          </figcaption>
+        </PhotoStage>
+      </figure>
+      <figure class="h-full">
+        <PhotoStage photo="boughs-corners" flip class="captioned h-full slide-from-right">
+          <div class="pan rounded-lg">
+            <Shot
+              name="pick"
+              class="max-sm:min-w-[24rem]"
+              sizes="(min-width: 1024px) 574px, calc(100vw - 4rem)"
+              alt="A browser pane on the invoices page with a table cell picked. The Send to agent card says what is wrong, long customer names are cut off, and sends it to Codex."
+            />
+          </div>
+          <figcaption class="stage-caption">
+            <h3 class="subtitle">From a page</h3>
+            <p class="body">Sends the element you clicked, its styles, a screenshot and any console errors.</p>
+          </figcaption>
+        </PhotoStage>
+      </figure>
+    </div>
   </section>
 
   <section class="wrap py-16 md:py-24" aria-labelledby="control">
     <h2 id="control" class="title">You decide what an agent may do</h2>
-    <div class="mt-10 grid grid-cols-1 gap-x-8 gap-y-14 *:min-w-0 md:grid-cols-2">
-      <figure>
-        <div class="stage pan reveal w-fit max-w-full">
+    <div class="mt-10 grid grid-cols-1 gap-5 *:min-w-0 md:grid-cols-2">
+      <figure class="h-full">
+        <PhotoStage photo="boughs-top" class="captioned h-full reveal">
+          <div class="pan rounded-lg">
           <Shot
             name="approval-card"
             class="max-sm:min-w-[26rem]"
             sizes="(min-width: 768px) 560px, calc(100vw - 4rem)"
             alt="An agent paused at pine browse open. The card reads: wants to drive the in-app browser, with Deny, Allow for this pane and Allow once."
           />
-        </div>
-        <figcaption class="mt-6 max-w-[48ch]">
-          <h3 class="text-lg font-medium">Approval cards</h3>
-          <p class="mt-2 text-muted-foreground">
-            A call that needs a permission the pane lacks waits on a card: allow once, allow for the pane, or deny.
-          </p>
-        </figcaption>
+          </div>
+          <figcaption class="stage-caption">
+            <h3 class="subtitle">Approve agent requests</h3>
+            <p class="body">Pine pauses a request that needs a new permission. Allow it once, allow it for that terminal, or deny it.</p>
+          </figcaption>
+        </PhotoStage>
       </figure>
-      <figure>
-        <div class="stage pan reveal w-fit max-w-full">
+      <figure class="h-full">
+        <PhotoStage photo="drift" class="captioned h-full reveal">
+          <div class="pan rounded-lg">
           <Shot
             name="sandbox-card"
             class="max-sm:min-w-[26rem]"
             sizes="(min-width: 768px) 560px, calc(100vw - 4rem)"
             alt="A sandboxed shell. Reading an SSH key fails, and a request to api.stripe.com waits on a card with Deny, Allow until restart and Allow for this workspace."
           />
-        </div>
-        <figcaption class="mt-6 max-w-[48ch]">
-          <h3 class="text-lg font-medium">Sandboxed workspaces</h3>
-          <p class="mt-2 text-muted-foreground">
-            Turn the sandbox on and a workspace's shells are confined to its folder and a list of allowed hosts.
-            Anything else asks you first.
-          </p>
-        </figcaption>
+          </div>
+          <figcaption class="stage-caption">
+            <h3 class="subtitle">Limit an agent's access</h3>
+            <p class="body">In a sandboxed project, shells reach only its folder and the network hosts you allow. Anything else asks you first.</p>
+          </figcaption>
+        </PhotoStage>
       </figure>
-    </div>
-  </section>
-
-  <section class="wrap py-16 md:py-24" aria-labelledby="review">
-    <div class="grid grid-cols-1 items-center gap-x-16 gap-y-12 *:min-w-0 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
-      <figure class="stage pan reveal w-fit max-w-full max-lg:order-last">
-        <Shot
-          name="changes"
-          class="max-sm:min-w-[27rem]"
-          sizes="(min-width: 1024px) 600px, calc(100vw - 4rem)"
-          alt="The Git panel on the branch feat/idempotency-keys with two changed files and two untracked files, next to the diff of invoices.ts."
-        />
-      </figure>
-      <div>
-        <h2 id="review" class="title">Read the change before it lands</h2>
-        <p class="lede mt-4 max-w-[44ch]">
-          The built-in Git extension lists what changed and opens any file as a diff. Agents can stage and commit
-          with <code>pine git</code>. Discarding changes is yours alone, after a confirm.
-        </p>
-      </div>
     </div>
   </section>
 
   <section class="wrap py-16 md:py-24" aria-labelledby="customize">
-    <h2 id="customize" class="title">Shape it to how you work</h2>
+    <h2 id="customize" class="title">Customise the workspace</h2>
     <div class="mt-10 grid grid-cols-1 gap-5 *:min-w-0 lg:grid-cols-12">
       <article class="rounded-2xl bg-card p-6 md:p-8 lg:col-span-7">
-        <h3 class="text-lg font-medium">Sidebar sections from a JSON file</h3>
+        <h3 class="subtitle">Your own sidebar sections</h3>
         <p class="mt-2 max-w-[52ch] text-muted-foreground">
-          A view is one data file that Pine draws with its own components. An agent can write one, and it appears
-          once you switch it on.
+          Describe a sidebar section in one JSON file. An agent can write it for you, and Pine shows it once you
+          switch it on.
         </p>
         <div class="reveal mt-7 grid max-w-[746px] items-end gap-4 sm:grid-cols-[438fr_292fr]">
           <Shot
@@ -267,10 +288,10 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
         </div>
       </article>
       <article class="rounded-2xl bg-card p-6 md:p-8 lg:col-span-5">
-        <h3 class="text-lg font-medium">Extensions from any git repository</h3>
+        <h3 class="subtitle">Extensions from any git repository</h3>
         <p class="mt-2 text-muted-foreground">
-          An extension is a manifest and an optional program in any language. Add a marketplace repository, install
-          what you want and approve it before it runs.
+          Add a repository that lists extensions, install the ones you want, and approve each before it runs.
+          Write your own in any language.
         </p>
         <pre class="codeblock mt-6 !bg-background" tabindex="0" aria-label="Example pine.json manifest"><code>{`{
   "id": "weather",
@@ -287,10 +308,10 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
       </article>
       <article class="grid items-center gap-x-10 gap-y-7 rounded-2xl bg-card p-6 md:p-8 lg:col-span-12 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)]">
         <div>
-          <h3 class="text-lg font-medium">Themes, prompt and keys</h3>
+          <h3 class="subtitle">Themes, prompt and shortcuts</h3>
           <p class="mt-2 max-w-[40ch] text-muted-foreground">
-            Pick a theme, then give the terminal or the editor its own colour scheme. Arrange the chips in your
-            prompt and set your own chords.
+            Pick a theme, then give the terminal or the editor its own colour scheme. Choose what your prompt
+            shows and set your own keyboard shortcuts.
           </p>
         </div>
         <div class="pan reveal">
@@ -322,7 +343,7 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
   <section class="wrap pt-16 pb-24 md:pt-24 md:pb-32" aria-labelledby="get">
     <div class="grid items-center gap-x-12 gap-y-8 rounded-2xl bg-card p-7 md:p-12 lg:grid-cols-[minmax(0,1fr)_auto]">
       <div>
-        <h2 id="get" class="title">Pine runs on Linux today</h2>
+        <h2 id="get" class="title">Download Pine for Linux</h2>
         <p class="lede mt-3 max-w-[52ch]">
           {
             release

@@ -1,0 +1,27 @@
+---
+import type { ImageMetadata } from 'astro'
+
+interface Props {
+  photo: 'boughs-left' | 'boughs-corners' | 'boughs-top' | 'trunks' | 'drift'
+  flip?: boolean
+  class?: string
+}
+
+const { photo, flip = false, class: className = '' } = Astro.props
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/stages/*.webp', { eager: true })
+const image = photos[`../assets/stages/${photo}.webp`]?.default
+if (!image) throw new Error(`missing stage photo ${photo}.webp`)
+---
+
+<div class:list={['stage stage-photo relative isolate', className]}>
+  <div class="pointer-events-none absolute inset-0 -z-10 overflow-clip rounded-[inherit]" aria-hidden="true">
+    <img
+      src={image.src}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      class:list={['stage-photo-image size-full object-cover', flip && '-scale-x-100']}
+    />
+  </div>
+  <slot />
+</div>

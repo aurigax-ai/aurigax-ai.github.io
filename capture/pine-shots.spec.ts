@@ -346,3 +346,101 @@ test('cards', async () => {
     await quit(app)
   }
 })
+
+async function guestPoint(app: ElectronApplication, url: string, selector: string) {
+  return app.evaluate(
+    async ({ webContents }, { url, selector }) => {
+      const guest = webContents.getAllWebContents().find((wc) => wc.getType() === 'webview' && wc.getURL() === url)
+      if (!guest) return null
+      return guest.executeJavaScript(
+        `(() => { const el = [...document.querySelectorAll(${JSON.stringify(selector)})][0]; if (!el) return null; const r = el.getBoundingClientRect(); return { x: Math.round(r.x + r.width / 2), y: Math.round(r.y + r.height / 2) } })()`,
+      )
+    },
+    { url, selector },
+  ) as Promise<{ x: number; y: number } | null>
+}
+
+async function guestClick(app: ElectronApplication, url: string, point: { x: number; y: number }) {
+  await app.evaluate(
+    ({ webContents }, { url, x, y }) => {
+      const guest = webContents.getAllWebContents().find((wc) => wc.getType() === 'webview' && wc.getURL() === url)
+      if (!guest) throw new Error('guest missing')
+      guest.sendInputEvent({ type: 'mouseMove', x, y })
+      guest.sendInputEvent({ type: 'mouseDown', x, y, button: 'left', clickCount: 1 })
+      guest.sendInputEvent({ type: 'mouseUp', x, y, button: 'left', clickCount: 1 })
+    },
+    { url, ...point },
+  )
+}
+
+test('pick', async () => {
+  test.setTimeout(300_000)
+  const { app, win } = await launch({ approvals: { mode: 'allow' } })
+  try {
+    await busyDay(win)
+    await agent(win, 'marlow-web', 'codex "the invoice table overflows at 1280px"', 'Ready for you to look')
+    await win.waitForTimeout(2500)
+    const url = 'http://127.0.0.1:4173/invoices'
+    await expect.poll(() => guestPoint(app, url, 'tbody tr:nth-child(2) td:nth-child(2)'), { timeout: 20_000 }).not.toBeNull()
+    await win.getByRole('button', { name: 'Point at element' }).click()
+    await win.waitForTimeout(800)
+    const cell = await guestPoint(app, url, 'tbody tr:nth-child(2) td:nth-child(2)')
+    if (!cell) throw new Error('no cell')
+    await app.evaluate(
+      ({ webContents }, { url, x, y }) => {
+        const guest = webContents.getAllWebContents().find((wc) => wc.getType() === 'webview' && wc.getURL() === url)
+        guest?.sendInputEvent({ type: 'mouseMove', x, y })
+      },
+      { url, ...cell },
+    )
+    await win.waitForTimeout(700)
+    await shot(win, 'pick-hover')
+    await guestClick(app, url, cell)
+    const panel = win.getByRole('region', { name: 'Send to agent' })
+    await expect(panel).toBeVisible({ timeout: 15_000 })
+    await panel.getByLabel('What’s wrong?').fill('Long customer names are cut off. Show the full name on hover.')
+    await win.mouse.move(WIDTH / 2, 40)
+    await win.waitForTimeout(900)
+    await win.screenshot({ path: join(OUT, 'pick-panel.png') })
+    await panel.getByRole('button', { name: 'Send' }).click()
+    await win.waitForTimeout(2500)
+    await shot(win, 'pick-sent')
+  } finally {
+    await quit(app)
+  }
+})
+
+test('select', async () => {
+  test.setTimeout(300_000)
+  const { app, win } = await launch()
+  try {
+    await busyDay(win)
+    await goto(win, 'marlow-api')
+    await run(win, 'pine open src/lib/idempotency.ts', 3000)
+    await win.locator('.pane-tab:visible').filter({ hasText: 'zsh' }).first().click()
+    await win.waitForTimeout(800)
+    await term(win).click()
+    await run(win, 'claude "make POST /invoices idempotent"', 400)
+    await expect(win.locator('.xterm-rows:visible').first()).toContainText('Apply it to the dev database', { timeout: 30_000 })
+    await win.getByText('idempotency.ts', { exact: true }).first().click()
+    await win.waitForTimeout(1500)
+    const decline = win.getByRole('button', { name: 'No', exact: true })
+    if (await decline.isVisible().catch(() => false)) await decline.click()
+    const line = win.locator('.view-line:visible').filter({ hasText: 'export async function findReplay' }).first()
+    await expect(line).toBeVisible({ timeout: 15_000 })
+    await line.click()
+    await win.keyboard.press('Home')
+    for (let i = 0; i < 5; i++) await win.keyboard.press('Shift+ArrowDown')
+    await win.keyboard.press('Shift+End')
+    await win.waitForTimeout(400)
+    await win.keyboard.press('Control+Shift+E')
+    const panel = win.getByRole('region', { name: 'Send to agent' })
+    await expect(panel).toBeVisible({ timeout: 15_000 })
+    await panel.getByLabel('Note for the agent').fill('Should a replay check the key has not expired?')
+    await win.mouse.move(WIDTH / 2, 40)
+    await win.waitForTimeout(900)
+    await win.screenshot({ path: join(OUT, 'select-panel.png') })
+  } finally {
+    await quit(app)
+  }
+})

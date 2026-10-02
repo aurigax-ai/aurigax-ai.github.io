@@ -36,14 +36,24 @@ Page width 1200px. Sections are separated by 160 to 224px of space, not rules.
 
 ## Captures
 
-- Every capture sits on a `.stage` panel or inside a `card` panel, never bare on the page.
-- The hero stage alone carries a picture (`.stage-photo`): blurred pine boughs in grey-green mist,
-  washed out with heavy white grain. It is a pine close-up on purpose, not a landscape vista. Other
-  stages stay flat so the picture stays special.
-- A capture is shown close to its real size: between 0.75 and 1.05 of the app's CSS pixels. Crop a
-  capture to fit a column; never shrink a whole window into one.
-- Below 768px a full-window capture keeps a readable width and pans sideways inside its stage.
+- Every capture sits on a picture panel (`PhotoStage`) or inside a `card` panel, never bare on the page.
+- Picture panels carry a washed, grainy pine photo (`src/assets/stage.webp` behind the hero,
+  `src/assets/stages/*.webp` elsewhere): blurred boughs and trunks in grey-green mist. Pine seen
+  close, never a landscape vista. Neighbouring panels use different photos.
+- A capture is shown close to its real size: between 0.75 and 1.05 of the app's CSS pixels, and
+  never above 1. Crop a capture to fit a column; never shrink a whole window into one. Captures
+  shown side by side are cropped to the same frame.
+- No capture appears twice on a page.
+- A caption on a picture panel is plain text set on the photo at the bottom left, over a corner dim
+  that fades out (`.captioned`, `.stage-caption`). No card, no hover reveal, nothing over the capture.
+- Below 768px a full-window capture keeps a readable width and pans sideways inside its panel.
 - Each capture has alt text that says what is on screen.
+
+## Body copy
+
+One scale for body copy: `.title` for section headings, `.lede` (17px) for the line under one,
+`.subtitle` (17px medium) for a card or caption title, `.body` (15px) for everything else, `.mono`
+(14px) for commands. Copy uses plain words: no pane, hook, block, chip or chord.
 
 ## Components
 
@@ -56,7 +66,12 @@ download page matches. One label per action: the download action is always
 
 - The hero tabs tour the four captures: a progress line fills under the active tab, the next
   capture arrives with a short fade from blur. Hover or focus pauses it; choosing a tab ends it.
-- Hero text and the stage rise once on load. Captures below ease up as they scroll into view
-  (CSS scroll-driven, where supported).
+- Hero text and the stage rise once on load.
+- Scroll-linked, with CSS scroll timelines (Chrome, Edge, Safari; still elsewhere): the hero window
+  opens from 0.94 to full size, panel photos drift against their captures, the sidebar and
+  notification captures move at different speeds, and the two "show an agent" panels slide in from
+  opposite sides. An element with `overflow: hidden` becomes the scroll timeline's scroller, so
+  panels clip with `overflow: clip`.
+- Hover: a panel's photo zooms slowly and its capture lifts a few pixels.
 - The header gains its bottom line after the page scrolls.
 - All of it is off under `prefers-reduced-motion`; nothing is hidden when motion is off.

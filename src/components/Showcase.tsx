@@ -44,7 +44,7 @@ export function Showcase({ slides, backdrop }: { slides: Slide[]; backdrop: stri
           <TabsTrigger
             key={slide.id}
             value={slide.id}
-            className="h-auto flex-none px-3 pt-1 pb-3 text-[0.9375rem] after:hidden data-active:text-foreground"
+            className="body h-auto flex-none px-3 pt-1 pb-3 after:hidden data-active:text-foreground"
           >
             {slide.label}
             <span aria-hidden="true" className="absolute inset-x-3 bottom-0 h-0.5 overflow-hidden rounded-full bg-border">
@@ -78,11 +78,14 @@ export function Showcase({ slides, backdrop }: { slides: Slide[]; backdrop: stri
           ))}
         </div>
       </div>
-      <p
-        aria-live="polite"
-        className="mx-auto mt-5 max-w-[64ch] text-center text-[0.9375rem] leading-relaxed text-muted-foreground"
-      >
+      <p aria-live="polite" className="body mt-5 max-w-[68ch] text-muted-foreground">
+        <span className="font-medium text-foreground">
+          {slides.find((slide) => slide.id === active)?.label}.
+        </span>{' '}
         {slides.find((slide) => slide.id === active)?.caption}
+      </p>
+      <p className="body mt-1 text-muted-foreground">
+        The agent sessions in these captures are scripted stand-ins running in the real app.
       </p>
     </Tabs>
   )
