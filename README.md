@@ -1,4 +1,4 @@
-# pine-website
+# Pine website
 
 The website for [Pine](https://github.com/aurigax-ai/pine), a terminal-first workspace for Linux.
 It is a static site with two pages:
@@ -8,7 +8,8 @@ It is a static site with two pages:
 | `/` | What Pine is, with captures of the real app |
 | `/download/` | The latest release, its files and sizes, and install steps |
 
-Live at https://aurigax-ai.github.io/pine-website/.
+Live at https://aurigax-ai.github.io/. GitHub serves an organisation's root address only from the
+repository named `aurigax-ai.github.io`, which is why this repository has that name.
 
 ## Develop
 
@@ -16,7 +17,7 @@ Use pnpm.
 
 ```bash
 pnpm install
-pnpm dev          # http://localhost:4321/pine-website/
+pnpm dev          # http://localhost:4321/
 pnpm check        # typecheck, unit tests, build, smoke tests
 ```
 
@@ -32,8 +33,7 @@ pnpm check        # typecheck, unit tests, build, smoke tests
 | `pnpm shots <folder>` | Import new app captures and cut the crops each section uses (see below) |
 | `pnpm social [file]` | Render the social card to `public/og.png`, and to `file` at 1280 by 640 for a GitHub social preview |
 
-The site is served from a sub-path. `SITE_BASE` sets it and defaults to `/pine-website`; build with
-`SITE_BASE=/` to serve from the root. Internal links go through `href()` in `src/lib/paths.ts`.
+The site is served from the root. To serve it from a sub-path, build with `SITE_BASE=/that-path`. Internal links go through `href()` in `src/lib/paths.ts`.
 
 Stack: Astro (static output), Tailwind CSS v4, shadcn/ui components on Base UI (the same preset the
 app uses), self-hosted Geist fonts and Phosphor icons. React runs in the browser only for the hero

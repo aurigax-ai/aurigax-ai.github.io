@@ -25,14 +25,14 @@ function watchErrors(page: Page): string[] {
 }
 
 test.describe('with GitHub answering', () => {
-  test('home shows the product, its screenshots and working links under the base path', async ({ page, request }) => {
+  test('home shows the product, its screenshots and working links', async ({ page, request }) => {
     const errors = watchErrors(page)
     await stubGitHub(page)
     await page.goto('./')
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('One workspace for you and every coding agent you run.')
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       'href',
-      'https://aurigax-ai.github.io/pine-website/',
+      'https://aurigax-ai.github.io/',
     )
     const images = page.locator('main img')
     expect(await images.count()).toBeGreaterThanOrEqual(7)
@@ -47,7 +47,7 @@ test.describe('with GitHub answering', () => {
       expect((await request.get(asset)).status()).toBe(200)
     }
     await page.getByRole('main').getByRole('link', { name: 'Download' }).first().click()
-    await expect(page).toHaveURL(/\/pine-website\/download\/$/)
+    await expect(page).toHaveURL(/\/download\/$/)
     expect(errors).toEqual([])
   })
 

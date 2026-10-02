@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test'
 
 const port = 4391
-const base = (process.env.SITE_BASE ?? '/pine-website').replace(/\/$/, '')
+const base = (process.env.SITE_BASE ?? '/').replace(/\/$/, '')
 
 export default defineConfig({
   testDir: 'tests/smoke',
