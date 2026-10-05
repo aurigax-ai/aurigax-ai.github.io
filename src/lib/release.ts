@@ -4,7 +4,7 @@ export interface ReleaseAsset {
   name: string
   size: number
   url: string
-  kind: 'appimage' | 'tarball' | 'other'
+  kind: 'dmg' | 'appimage' | 'tarball' | 'deb' | 'other'
 }
 
 export interface Release {
@@ -23,15 +23,27 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 export function assetKind(name: string): ReleaseAsset['kind'] {
+  if (/\.dmg$/i.test(name)) return 'dmg'
   if (/\.AppImage$/i.test(name)) return 'appimage'
   if (/\.tar\.gz$/i.test(name)) return 'tarball'
+  if (/\.deb$/i.test(name)) return 'deb'
   return 'other'
 }
 
 export function assetLabel(asset: Pick<ReleaseAsset, 'kind'>): string {
-  if (asset.kind === 'appimage') return 'AppImage'
-  if (asset.kind === 'tarball') return 'Tarball of the unpacked app'
+  if (asset.kind === 'dmg') return 'macOS disk image, Apple silicon'
+  if (asset.kind === 'appimage') return 'Linux AppImage, x64'
+  if (asset.kind === 'tarball') return 'Linux tarball of the unpacked app, x64'
+  if (asset.kind === 'deb') return 'Debian and Ubuntu package, x64'
   return 'File'
+}
+
+export function assetAction(asset: Pick<ReleaseAsset, 'kind'>): string {
+  if (asset.kind === 'dmg') return 'Get the disk image'
+  if (asset.kind === 'appimage') return 'Get the AppImage'
+  if (asset.kind === 'tarball') return 'Get the tarball'
+  if (asset.kind === 'deb') return 'Get the .deb'
+  return 'Get the file'
 }
 
 function parseAsset(input: unknown, tag: string): ReleaseAsset | null {
@@ -50,7 +62,7 @@ export function parseRelease(input: unknown): Release | null {
   if (typeof tag !== 'string' || !TAG.test(tag)) return null
   if (url !== `${RELEASE_PREFIX}tag/${tag}`) return null
   if (typeof publishedAt !== 'string' || Number.isNaN(Date.parse(publishedAt))) return null
-  const order = { appimage: 0, tarball: 1, other: 2 }
+  const order = { dmg: 0, appimage: 1, tarball: 2, deb: 3, other: 4 }
   const assets = (Array.isArray(input.assets) ? input.assets : [])
     .map((asset) => parseAsset(asset, tag))
     .filter((asset): asset is ReleaseAsset => asset !== null)

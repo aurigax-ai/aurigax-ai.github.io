@@ -1,6 +1,6 @@
 # Ostia website
 
-The website for [Ostia](https://github.com/aurigax-ai/ostia), a terminal-first workspace for Linux.
+The website for [Ostia](https://github.com/aurigax-ai/ostia), a terminal-first workspace for macOS and Linux.
 It is a static site with two pages:
 
 | Page | What it shows |
