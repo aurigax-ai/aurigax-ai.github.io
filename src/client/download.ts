@@ -41,6 +41,8 @@ function show(release: Release): void {
   if (region) region.innerHTML = releasePanel(release).value
   const appImage = release.assets.find((asset) => asset.kind === 'appimage')
   const tarball = release.assets.find((asset) => asset.kind === 'tarball')
+  const dmg = release.assets.find((asset) => asset.kind === 'dmg')
+  if (dmg) setFile('dmg', dmg.name)
   if (appImage) setFile('appimage', appImage.name)
   if (tarball) {
     setFile('tarball', tarball.name)

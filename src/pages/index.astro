@@ -100,20 +100,19 @@ const also = [
 ]
 
 const release = snapshotRelease
-const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.name ?? 'ostia-<version>.AppImage'
 ---
 
 <Base
   title="Ostia: one workspace for you and your coding agents"
-  description="Ostia is a Linux terminal where you run coding agents beside your shell, then watch, guide and approve their work."
+  description="Ostia is a terminal for macOS and Linux where you run coding agents beside your shell, then watch, guide and approve their work."
   current="home"
 >
   <link slot="head" rel="preload" as="image" type="image/webp" href={backdrop.src} />
   <section class="wrap pt-12 pb-16 md:pt-20 md:pb-24" aria-labelledby="claim">
     <h1 id="claim" class="display rise max-w-[21ch]">One workspace for you and your coding agents.</h1>
     <p class="lede rise mt-5 max-w-[54ch]" style="--rise: 1">
-      Ostia is a Linux terminal where you run coding agents beside your shell, then watch, guide and approve their
-      work. It brings no agent of its own: use Claude Code, Codex or any CLI.
+      Ostia is a terminal for macOS and Linux where you run coding agents beside your shell, then watch, guide and
+      approve their work. It brings no agent of its own: use Claude Code, Codex or any CLI.
     </p>
     <div class="rise mt-8 flex flex-wrap gap-3" style="--rise: 2">
       <a class={buttonVariants({ size: 'xl' })} href={href('download/')}><Icon name="download" /> Download</a>
@@ -343,16 +342,16 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
   <section class="wrap pt-16 pb-24 md:pt-24 md:pb-32" aria-labelledby="get">
     <div class="grid items-center gap-x-12 gap-y-8 rounded-2xl bg-card p-7 md:p-12 lg:grid-cols-[minmax(0,1fr)_auto]">
       <div>
-        <h2 id="get" class="title">Download Ostia for Linux</h2>
+        <h2 id="get" class="title">Download Ostia for macOS and Linux</h2>
         <p class="lede mt-3 max-w-[52ch]">
           {
             release
-              ? `Version ${release.version}, published ${formatDate(release.publishedAt)}, for x64 as an AppImage or a tarball.`
-              : 'For x64, as an AppImage or a tarball.'
+              ? `Version ${release.version}, published ${formatDate(release.publishedAt)}, for macOS on Apple silicon and Linux on x64.`
+              : 'For macOS on Apple silicon and Linux on x64.'
           }
         </p>
-        <pre class="codeblock mt-6 !bg-background max-w-xl" tabindex="0" aria-label="Commands to run the AppImage"><code>chmod +x {appImage}
-./{appImage}</code></pre>
+        <pre class="codeblock mt-6 !bg-background max-w-xl" tabindex="0" aria-label="Command to install with Homebrew"><code>brew install --cask aurigax-ai/tap/ostia</code></pre>
+        <p class="mt-3 text-sm text-muted-foreground">On Linux, get the AppImage or the tarball from the download page.</p>
       </div>
       <a class:list={[buttonVariants({ size: 'xl' }), 'justify-self-start']} href={href('download/')}>
         <Icon name="download" /> Download

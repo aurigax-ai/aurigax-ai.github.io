@@ -82,6 +82,13 @@ test.describe('with GitHub answering', () => {
       'https://github.com/aurigax-ai/ostia/releases/download/v9.8.7/ostia-9.8.7.AppImage',
     )
     await expect(region.getByRole('link', { name: 'Get the tarball' })).toBeVisible()
+    await expect(region).toContainText('ostia-9.8.7-arm64.dmg, 125 MB')
+    await expect(region.getByRole('link', { name: 'Get the disk image' })).toHaveAttribute(
+      'href',
+      'https://github.com/aurigax-ai/ostia/releases/download/v9.8.7/ostia-9.8.7-arm64.dmg',
+    )
+    await expect(page.getByLabel('Homebrew commands')).toContainText('brew install --cask aurigax-ai/tap/ostia')
+    await expect(page.locator('[data-file="dmg"]')).toHaveText('ostia-9.8.7-arm64.dmg')
     await expect(page.getByLabel('AppImage commands')).toContainText('chmod +x ostia-9.8.7.AppImage')
     await expect(page.getByLabel('Tarball commands')).toContainText('./ostia-9.8.7-linux-x64/pine')
     await expect(page.locator('#release-status')).toHaveText('Read from GitHub just now.')
@@ -115,7 +122,7 @@ test.describe('without JavaScript', () => {
     await page.goto('./')
     await expect(page.getByRole('tabpanel').getByRole('img')).toHaveAttribute('alt', /sidebar lists six projects/)
     await expect(page.getByRole('heading', { name: 'See which agents need you' })).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'Download Ostia for Linux' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Download Ostia for macOS and Linux' })).toBeVisible()
   })
 
   test('download renders the build-time snapshot', async ({ page }) => {

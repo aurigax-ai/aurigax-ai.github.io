@@ -6,6 +6,11 @@
   "prerelease": false,
   "assets": [
     {
+      "name": "ostia-9.8.7-arm64.dmg",
+      "size": 125000000,
+      "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v9.8.7/ostia-9.8.7-arm64.dmg"
+    },
+    {
       "name": "ostia-9.8.7-linux-x64.tar.gz",
       "size": 150000000,
       "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v9.8.7/ostia-9.8.7-linux-x64.tar.gz"

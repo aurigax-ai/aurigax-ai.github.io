@@ -1,7 +1,7 @@
 import { buttonVariants } from '../components/ui/button'
 import { type SafeHtml, html } from './html'
 import { icon } from './icons'
-import { type Release, assetLabel, formatBytes, formatDate } from './release'
+import { type Release, assetAction, assetLabel, formatBytes, formatDate } from './release'
 
 export function releasePanel(release: Release): SafeHtml {
   return html`<div data-release="${release.version}">
@@ -22,8 +22,8 @@ export function releasePanel(release: Release): SafeHtml {
                     ${asset.name}, ${formatBytes(asset.size)}
                   </p>
                 </div>
-                <a class="${buttonVariants({ size: 'xl', variant: asset.kind === 'appimage' ? 'default' : 'outline' })}" href="${asset.url}">
-                  ${icon('download')} Get the ${asset.kind === 'appimage' ? 'AppImage' : asset.kind === 'tarball' ? 'tarball' : 'file'}
+                <a class="${buttonVariants({ size: 'xl', variant: asset.kind === 'dmg' || asset.kind === 'appimage' ? 'default' : 'outline' })}" href="${asset.url}">
+                  ${icon('download')} ${assetAction(asset)}
                 </a>
               </li>`,
             )}

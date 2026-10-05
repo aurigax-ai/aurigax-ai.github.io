@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { assetKind, assetLabel, formatBytes, formatDate, isNewer, parseRelease } from '../../src/lib/release'
+import { assetAction, assetKind, assetLabel, formatBytes, formatDate, isNewer, parseRelease } from '../../src/lib/release'
 
 const base = 'https://github.com/aurigax-ai/ostia/releases'
 const valid = {
@@ -107,9 +107,28 @@ describe('formatting', () => {
     expect(assetKind('pine-0.3.0-linux-x64.tar.gz')).toBe('tarball')
     expect(assetKind('ostia-0.5.6.AppImage')).toBe('appimage')
     expect(assetKind('ostia-0.5.6-linux-x64.tar.gz')).toBe('tarball')
+    expect(assetKind('ostia-0.5.6-arm64.dmg')).toBe('dmg')
+    expect(assetKind('ostia_0.5.7_amd64.deb')).toBe('deb')
     expect(assetKind('checksums.txt')).toBe('other')
-    expect(assetLabel({ kind: 'appimage' })).toBe('AppImage')
-    expect(assetLabel({ kind: 'tarball' })).toBe('Tarball of the unpacked app')
+    expect(assetLabel({ kind: 'dmg' })).toBe('macOS disk image, Apple silicon')
+    expect(assetLabel({ kind: 'appimage' })).toBe('Linux AppImage, x64')
+    expect(assetLabel({ kind: 'tarball' })).toBe('Linux tarball of the unpacked app, x64')
+    expect(assetLabel({ kind: 'deb' })).toBe('Debian and Ubuntu package, x64')
+    expect(assetAction({ kind: 'dmg' })).toBe('Get the disk image')
+    expect(assetAction({ kind: 'deb' })).toBe('Get the .deb')
+    expect(assetAction({ kind: 'other' })).toBe('Get the file')
+  })
+
+  it('lists the macOS disk image first, then the Linux files', () => {
+    const release = parseRelease({
+      ...valid,
+      tag_name: 'v0.5.7',
+      html_url: `${base}/tag/v0.5.7`,
+      assets: ['ostia_0.5.7_amd64.deb', 'ostia-0.5.7-linux-x64.tar.gz', 'ostia-0.5.7.AppImage', 'ostia-0.5.7-arm64.dmg'].map(
+        (name) => ({ name, size: 1, browser_download_url: `${base}/download/v0.5.7/${name}` }),
+      ),
+    })
+    expect(release?.assets.map((asset) => asset.kind)).toEqual(['dmg', 'appimage', 'tarball', 'deb'])
   })
 
   it('compares versions numerically', () => {
