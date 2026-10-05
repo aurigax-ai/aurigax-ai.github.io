@@ -5,21 +5,21 @@ import { snapshotRelease } from '../lib/snapshot'
 import { releasePanel } from '../lib/views'
 
 const release = snapshotRelease
-const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.name ?? 'pine-<version>.AppImage'
+const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.name ?? 'ostia-<version>.AppImage'
 const tarball =
-  release?.assets.find((asset) => asset.kind === 'tarball')?.name ?? 'pine-<version>-linux-x64.tar.gz'
+  release?.assets.find((asset) => asset.kind === 'tarball')?.name ?? 'ostia-<version>-linux-x64.tar.gz'
 const folder = tarball.replace(/\.tar\.gz$/, '')
 ---
 
 <Base
-  title="Download Pine for Linux"
-  description="Get the latest Pine release for Linux as an AppImage or a tarball, with install steps and how updates work."
+  title="Download Ostia for Linux"
+  description="Get the latest Ostia release for Linux as an AppImage or a tarball, with install steps and how updates work."
   current="download"
 >
   <section class="wrap pb-10 pt-12 md:pt-16" aria-labelledby="title">
-    <h1 id="title" class="display">Download Pine</h1>
+    <h1 id="title" class="display">Download Ostia</h1>
     <p class="lede mt-5 max-w-[60ch]">
-      Pine has Linux builds today, for x64. macOS and Windows builds are not published yet.
+      Ostia has Linux builds today, for x64. macOS and Windows builds are not published yet.
     </p>
   </section>
 
@@ -46,7 +46,7 @@ const folder = tarball.replace(/\.tar\.gz$/, '')
       <aside class="lg:pt-12" aria-labelledby="updates">
         <h2 id="updates" class="text-lg font-medium">How updates work</h2>
         <p class="mt-3 leading-relaxed text-muted-foreground">
-          Pine asks GitHub for the latest release once a day and shows a notice with a link. It never downloads
+          Ostia asks GitHub for the latest release once a day and shows a notice with a link. It never downloads
           or installs anything by itself. You can switch the check off in Settings, under About.
         </p>
       </aside>
@@ -82,7 +82,7 @@ const folder = tarball.replace(/\.tar\.gz$/, '')
           and installs the app for your user. Run the same commands again to update.
         </p>
         <pre class="codeblock mt-4" tabindex="0" aria-label="Build commands"><code>git clone {APP_REPO_URL}.git
-cd pine
+cd ostia
 pnpm install
 pnpm install:local</code></pre>
       </div>
@@ -92,7 +92,7 @@ pnpm install:local</code></pre>
           <li>The app in <code>~/.local/share/pine/app</code></li>
           <li>A desktop launcher in <code>~/.local/share/applications/pine.desktop</code>, with its icons</li>
           <li>
-            The <code>pine</code> command in <code>~/.local/bin</code>, for use outside the app. Inside Pine
+            The <code>pine</code> command in <code>~/.local/bin</code>, for use outside the app. Inside Ostia
             every pane already has it.
           </li>
         </ul>

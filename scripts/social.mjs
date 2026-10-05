@@ -21,7 +21,7 @@ const page = `<!doctype html>
   h1 { position: absolute; left: 6vw; top: 26vh; width: 86vw; font-size: 4.7vw; font-weight: 500; line-height: 1.08; letter-spacing: -0.03em; }
   .shot { position: absolute; left: 6vw; top: 55vh; width: 108vw; border-radius: 1vw; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.1), 0 3vw 6vw rgb(0 0 0 / 0.6); }
 </style>
-<header><img src="${icon}" alt="" />Pine</header>
+<header><img src="${icon}" alt="" />Ostia</header>
 <h1>One workspace for you and your coding agents.</h1>
 <img class="shot" src="${hero}" alt="" />`
 

@@ -1,11 +1,11 @@
-# Pine website
+# Ostia website
 
-The website for [Pine](https://github.com/aurigax-ai/pine), a terminal-first workspace for Linux.
+The website for [Ostia](https://github.com/aurigax-ai/ostia), a terminal-first workspace for Linux.
 It is a static site with two pages:
 
 | Page | What it shows |
 |---|---|
-| `/` | What Pine is, with captures of the real app |
+| `/` | What Ostia is, with captures of the real app |
 | `/download/` | The latest release, its files and sizes, and install steps |
 
 Live at https://aurigax-ai.github.io/. GitHub serves an organisation's root address only from the
@@ -46,7 +46,7 @@ The download page renders without JavaScript from a snapshot saved at build time
 with live data when JavaScript runs.
 
 **Download** (`src/client/download.ts`) asks the GitHub REST API for
-`repos/aurigax-ai/pine/releases/latest`, unauthenticated, and caches the answer in `sessionStorage`
+`repos/aurigax-ai/ostia/releases/latest`, unauthenticated, and caches the answer in `sessionStorage`
 for 30 minutes. `parseRelease` (`src/lib/release.ts`) accepts only a release whose page and file
 links belong to that repository. If the call fails or is rate-limited, the page keeps the snapshot
 and points at the releases page.

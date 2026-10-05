@@ -5,7 +5,7 @@ const release = JSON.parse(readFileSync(new URL('../fixtures/release.json', impo
 
 async function stubGitHub(page: Page): Promise<void> {
   await page.route('https://api.github.com/**', (route) => {
-    if (route.request().url().endsWith('/repos/aurigax-ai/pine/releases/latest')) {
+    if (route.request().url().endsWith('/repos/aurigax-ai/ostia/releases/latest')) {
       return route.fulfill({ json: release })
     }
     return route.fulfill({ status: 404, json: { message: 'Not Found' } })
@@ -62,7 +62,7 @@ test.describe('with GitHub answering', () => {
     await page.getByRole('tab', { name: 'Drive the browser' }).click()
     await expect(panel).toHaveCount(1)
     await expect(panel.getByRole('img')).toHaveAttribute('alt', /browser pane shows the invoices page/)
-    await expect(page.getByText('opens its page in a browser inside Pine')).toBeVisible()
+    await expect(page.getByText('opens its page in a browser inside Ostia')).toBeVisible()
     await page.getByRole('tab', { name: 'Approve' }).press('Enter')
     await expect(panel).toHaveCount(1)
     await expect(panel.getByRole('img')).toHaveAttribute('alt', /asks to drive the in-app browser/)
@@ -76,14 +76,14 @@ test.describe('with GitHub answering', () => {
     const region = page.locator('#release')
     await expect(region.locator('[data-release="9.8.7"]')).toBeVisible()
     await expect(region).toContainText('March 4, 2027')
-    await expect(region).toContainText('pine-9.8.7.AppImage, 153 MB')
+    await expect(region).toContainText('ostia-9.8.7.AppImage, 153 MB')
     await expect(region.getByRole('link', { name: 'Get the AppImage' })).toHaveAttribute(
       'href',
-      'https://github.com/aurigax-ai/pine/releases/download/v9.8.7/pine-9.8.7.AppImage',
+      'https://github.com/aurigax-ai/ostia/releases/download/v9.8.7/ostia-9.8.7.AppImage',
     )
     await expect(region.getByRole('link', { name: 'Get the tarball' })).toBeVisible()
-    await expect(page.getByLabel('AppImage commands')).toContainText('chmod +x pine-9.8.7.AppImage')
-    await expect(page.getByLabel('Tarball commands')).toContainText('./pine-9.8.7-linux-x64/pine')
+    await expect(page.getByLabel('AppImage commands')).toContainText('chmod +x ostia-9.8.7.AppImage')
+    await expect(page.getByLabel('Tarball commands')).toContainText('./ostia-9.8.7-linux-x64/pine')
     await expect(page.locator('#release-status')).toHaveText('Read from GitHub just now.')
     expect(errors).toEqual([])
   })
@@ -98,11 +98,11 @@ test.describe('with GitHub unreachable', () => {
     await expect(page.locator('#release [data-release]')).toBeVisible()
     await expect(page.locator('#release').getByRole('link', { name: 'Get the AppImage' })).toHaveAttribute(
       'href',
-      /^https:\/\/github\.com\/aurigax-ai\/pine\/releases\/download\//,
+      /^https:\/\/github\.com\/aurigax-ai\/ostia\/releases\/download\//,
     )
     await expect(page.getByRole('link', { name: 'All releases on GitHub' })).toHaveAttribute(
       'href',
-      'https://github.com/aurigax-ai/pine/releases',
+      'https://github.com/aurigax-ai/ostia/releases',
     )
     expect(errors).toEqual([])
   })
@@ -115,7 +115,7 @@ test.describe('without JavaScript', () => {
     await page.goto('./')
     await expect(page.getByRole('tabpanel').getByRole('img')).toHaveAttribute('alt', /sidebar lists six projects/)
     await expect(page.getByRole('heading', { name: 'See which agents need you' })).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'Download Pine for Linux' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Download Ostia for Linux' })).toBeVisible()
   })
 
   test('download renders the build-time snapshot', async ({ page }) => {

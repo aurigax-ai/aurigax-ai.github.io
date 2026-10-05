@@ -18,14 +18,14 @@ const slides: Slide[] = [
     label: 'Run agents',
     caption:
       'Several agent sessions in one window. The sidebar shows which is working, which is waiting for you and which is done.',
-    alt: 'The Pine window. The sidebar lists six projects in two groups with their agent states. In marlow-api an agent has made a change and asks whether to apply a migration, and the diff of its change is open beside it.',
+    alt: 'The Ostia window. The sidebar lists six projects in two groups with their agent states. In marlow-api an agent has made a change and asks whether to apply a migration, and the diff of its change is open beside it.',
     image: await shotSources('hero'),
   },
   {
     id: 'browser',
     label: 'Drive the browser',
     caption:
-      'An agent starts a server, opens its page in a browser inside Pine and clicks through it with the pine command.',
+      'An agent starts a server, opens its page in a browser inside Ostia and clicks through it with the pine command.',
     alt: 'An agent session in marlow-web that ran pine process run, pine browse open, snapshot and click. Beside it a browser pane shows the invoices page the agent opened.',
     image: await shotSources('browser'),
   },
@@ -39,7 +39,7 @@ const slides: Slide[] = [
   {
     id: 'approve',
     label: 'Approve',
-    caption: 'When an agent needs a permission it lacks, Pine pauses it until you allow or deny the request.',
+    caption: 'When an agent needs a permission it lacks, Ostia pauses it until you allow or deny the request.',
     alt: 'An agent session paused at pine browse open. A card under the terminal asks to drive the in-app browser, with Deny, Allow for this pane and Allow once.',
     image: await shotSources('approval'),
   },
@@ -54,7 +54,7 @@ const commands = [
   },
   {
     command: 'pine browse open http://127.0.0.1:4173/invoices',
-    result: "Opens the page in Pine's browser, where the agent can read and click it.",
+    result: "Opens the page in Ostia's browser, where the agent can read and click it.",
     shot: 'see-browser',
     alt: 'A browser pane showing the invoices page at the address the agent opened.',
   },
@@ -79,7 +79,7 @@ const also = [
   },
   {
     title: 'Your layout comes back',
-    body: 'After a restart Pine restores your layout and terminal history. Running processes do not come back.',
+    body: 'After a restart Ostia restores your layout and terminal history. Running processes do not come back.',
   },
   {
     title: 'Separate windows',
@@ -100,19 +100,19 @@ const also = [
 ]
 
 const release = snapshotRelease
-const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.name ?? 'pine-<version>.AppImage'
+const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.name ?? 'ostia-<version>.AppImage'
 ---
 
 <Base
-  title="Pine: one workspace for you and your coding agents"
-  description="Pine is a Linux terminal where you run coding agents beside your shell, then watch, guide and approve their work."
+  title="Ostia: one workspace for you and your coding agents"
+  description="Ostia is a Linux terminal where you run coding agents beside your shell, then watch, guide and approve their work."
   current="home"
 >
   <link slot="head" rel="preload" as="image" type="image/webp" href={backdrop.src} />
   <section class="wrap pt-12 pb-16 md:pt-20 md:pb-24" aria-labelledby="claim">
     <h1 id="claim" class="display rise max-w-[21ch]">One workspace for you and your coding agents.</h1>
     <p class="lede rise mt-5 max-w-[54ch]" style="--rise: 1">
-      Pine is a Linux terminal where you run coding agents beside your shell, then watch, guide and approve their
+      Ostia is a Linux terminal where you run coding agents beside your shell, then watch, guide and approve their
       work. It brings no agent of its own: use Claude Code, Codex or any CLI.
     </p>
     <div class="rise mt-8 flex flex-wrap gap-3" style="--rise: 2">
@@ -141,7 +141,7 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
             name="rail"
             class="drift-slow"
             sizes="(min-width: 640px) 292px, 292px"
-            alt="Pine's sidebar: marlow-api waiting with a question, marlow-web needing approval, marlow-sdk done, harbor-infra working, tidepool with a failed command, handbook idle."
+            alt="Ostia's sidebar: marlow-api waiting with a question, marlow-web needing approval, marlow-sdk done, harbor-infra working, tidepool with a failed command, handbook idle."
           />
           <Shot
             name="notifications"
@@ -157,7 +157,7 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
   <section class="wrap py-16 md:py-24" aria-labelledby="cli">
     <h2 id="cli" class="title">Agents use the same app you do</h2>
     <p class="lede mt-4 max-w-[58ch]">
-      Every terminal in Pine has a <code>pine</code> command. An agent uses it to open tabs, a browser and diffs,
+      Every terminal in Ostia has a <code>pine</code> command. An agent uses it to open tabs, a browser and diffs,
       and you watch each one appear.
     </p>
     <ul class="mt-10 grid grid-cols-1 gap-5 *:min-w-0 lg:grid-cols-2">
@@ -242,7 +242,7 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
           </div>
           <figcaption class="stage-caption">
             <h3 class="subtitle">Approve agent requests</h3>
-            <p class="body">Pine pauses a request that needs a new permission. Allow it once, allow it for that terminal, or deny it.</p>
+            <p class="body">Ostia pauses a request that needs a new permission. Allow it once, allow it for that terminal, or deny it.</p>
           </figcaption>
         </PhotoStage>
       </figure>
@@ -271,7 +271,7 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
       <article class="rounded-2xl bg-card p-6 md:p-8 lg:col-span-7">
         <h3 class="subtitle">Your own sidebar sections</h3>
         <p class="mt-2 max-w-[52ch] text-muted-foreground">
-          Describe a sidebar section in one JSON file. An agent can write it for you, and Pine shows it once you
+          Describe a sidebar section in one JSON file. An agent can write it for you, and Ostia shows it once you
           switch it on.
         </p>
         <div class="reveal mt-7 grid max-w-[746px] items-end gap-4 sm:grid-cols-[438fr_292fr]">
@@ -343,7 +343,7 @@ const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.nam
   <section class="wrap pt-16 pb-24 md:pt-24 md:pb-32" aria-labelledby="get">
     <div class="grid items-center gap-x-12 gap-y-8 rounded-2xl bg-card p-7 md:p-12 lg:grid-cols-[minmax(0,1fr)_auto]">
       <div>
-        <h2 id="get" class="title">Download Pine for Linux</h2>
+        <h2 id="get" class="title">Download Ostia for Linux</h2>
         <p class="lede mt-3 max-w-[52ch]">
           {
             release

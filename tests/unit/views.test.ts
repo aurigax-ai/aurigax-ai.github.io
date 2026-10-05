@@ -28,13 +28,13 @@ describe('releasePanel', () => {
   it('lists the version, date and each file with size and link', () => {
     const release = parseRelease({
       tag_name: 'v0.3.0',
-      html_url: 'https://github.com/aurigax-ai/pine/releases/tag/v0.3.0',
+      html_url: 'https://github.com/aurigax-ai/ostia/releases/tag/v0.3.0',
       published_at: '2026-10-01T16:30:19Z',
       assets: [
         {
           name: 'pine-0.3.0.AppImage',
           size: 167484018,
-          browser_download_url: 'https://github.com/aurigax-ai/pine/releases/download/v0.3.0/pine-0.3.0.AppImage',
+          browser_download_url: 'https://github.com/aurigax-ai/ostia/releases/download/v0.3.0/pine-0.3.0.AppImage',
         },
       ],
     })
@@ -43,6 +43,6 @@ describe('releasePanel', () => {
     expect(panel).toContain('data-release="0.3.0"')
     expect(panel).toContain('October 1, 2026')
     expect(panel).toContain('pine-0.3.0.AppImage, 167 MB')
-    expect(panel).toContain('href="https://github.com/aurigax-ai/pine/releases/download/v0.3.0/pine-0.3.0.AppImage"')
+    expect(panel).toContain('href="https://github.com/aurigax-ai/ostia/releases/download/v0.3.0/pine-0.3.0.AppImage"')
   })
 })

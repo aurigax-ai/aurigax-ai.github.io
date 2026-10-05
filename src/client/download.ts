@@ -2,7 +2,7 @@ import { type Release, parseRelease } from '../lib/release'
 import { LATEST_RELEASE_API } from '../lib/site'
 import { releasePanel } from '../lib/views'
 
-const CACHE_KEY = 'pine:latest-release:v1'
+const CACHE_KEY = 'ostia:latest-release:v1'
 const CACHE_MS = 30 * 60 * 1000
 
 function cached(): Release | null {
