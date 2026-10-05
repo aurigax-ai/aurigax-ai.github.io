@@ -110,7 +110,7 @@ describe('formatting', () => {
     expect(assetKind('ostia-0.5.6-arm64.dmg')).toBe('dmg')
     expect(assetKind('ostia_0.5.7_amd64.deb')).toBe('deb')
     expect(assetKind('checksums.txt')).toBe('other')
-    expect(assetLabel({ kind: 'dmg' })).toBe('macOS disk image, Apple silicon')
+    expect(assetLabel({ kind: 'dmg' })).toBe('macOS 13 or later disk image, Apple silicon')
     expect(assetLabel({ kind: 'appimage' })).toBe('Linux AppImage, x64')
     expect(assetLabel({ kind: 'tarball' })).toBe('Linux tarball of the unpacked app, x64')
     expect(assetLabel({ kind: 'deb' })).toBe('Debian and Ubuntu package, x64')
