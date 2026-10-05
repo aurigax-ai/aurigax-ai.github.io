@@ -1,5 +1,5 @@
 {
-  "name": "pine-website",
+  "name": "ostia-website",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -35,7 +35,7 @@
     "typescript": "6.0.3",
     "vitest": "5.0.3"
   },
-  "description": "Website for Pine, a terminal-first workspace",
+  "description": "Website for Ostia, a terminal-first workspace",
   "dependencies": {
     "@base-ui/react": "^1.8.0",
     "@phosphor-icons/react": "^2.1.10",

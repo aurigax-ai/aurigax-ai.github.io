@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { assetKind, assetLabel, formatBytes, formatDate, isNewer, parseRelease } from '../../src/lib/release'
 
-const base = 'https://github.com/aurigax-ai/pine/releases'
+const base = 'https://github.com/aurigax-ai/ostia/releases'
 const valid = {
   tag_name: 'v0.3.0',
   html_url: `${base}/tag/v0.3.0`,
@@ -47,6 +47,36 @@ describe('parseRelease', () => {
     expect(release?.assets.map((asset) => asset.name)).toEqual(['pine-0.3.0.AppImage'])
   })
 
+  it('reads files named after either product: ostia-* from 0.5.6 on, pine-* before', () => {
+    const release = parseRelease({
+      ...valid,
+      tag_name: 'v0.5.6',
+      html_url: `${base}/tag/v0.5.6`,
+      assets: [
+        { name: 'ostia-0.5.6-linux-x64.tar.gz', size: 1, browser_download_url: `${base}/download/v0.5.6/ostia-0.5.6-linux-x64.tar.gz` },
+        { name: 'ostia-0.5.6.AppImage', size: 1, browser_download_url: `${base}/download/v0.5.6/ostia-0.5.6.AppImage` },
+      ],
+    })
+    expect(release?.assets.map((asset) => [asset.name, asset.kind])).toEqual([
+      ['ostia-0.5.6.AppImage', 'appimage'],
+      ['ostia-0.5.6-linux-x64.tar.gz', 'tarball'],
+    ])
+    expect(parseRelease(valid)?.assets.map((asset) => asset.name)).toEqual([
+      'pine-0.3.0.AppImage',
+      'pine-0.3.0-linux-x64.tar.gz',
+    ])
+  })
+
+  it('refuses links under the repository name it had before the rename', () => {
+    const old = 'https://github.com/aurigax-ai/pine/releases'
+    expect(parseRelease({ ...valid, html_url: `${old}/tag/v0.3.0` })).toBeNull()
+    const release = parseRelease({
+      ...valid,
+      assets: [{ ...valid.assets[1], browser_download_url: `${old}/download/v0.3.0/pine-0.3.0.AppImage` }],
+    })
+    expect(release?.assets).toEqual([])
+  })
+
   it('accepts a release without files and rejects non-objects', () => {
     expect(parseRelease({ ...valid, assets: undefined })?.assets).toEqual([])
     for (const input of [null, 'x', [], { message: 'API rate limit exceeded' }]) {
@@ -75,6 +105,8 @@ describe('formatting', () => {
   it('names file kinds', () => {
     expect(assetKind('pine-0.3.0.AppImage')).toBe('appimage')
     expect(assetKind('pine-0.3.0-linux-x64.tar.gz')).toBe('tarball')
+    expect(assetKind('ostia-0.5.6.AppImage')).toBe('appimage')
+    expect(assetKind('ostia-0.5.6-linux-x64.tar.gz')).toBe('tarball')
     expect(assetKind('checksums.txt')).toBe('other')
     expect(assetLabel({ kind: 'appimage' })).toBe('AppImage')
     expect(assetLabel({ kind: 'tarball' })).toBe('Tarball of the unpacked app')

@@ -1,21 +1,26 @@
 {
-  "fetchedAt": "2026-10-01T19:49:06.680Z",
+  "fetchedAt": "2026-10-05T14:00:15.381Z",
   "release": {
-    "tag_name": "v0.3.0",
-    "html_url": "https://github.com/aurigax-ai/pine/releases/tag/v0.3.0",
-    "published_at": "2026-10-01T16:30:19Z",
+    "tag_name": "v0.5.6",
+    "html_url": "https://github.com/aurigax-ai/ostia/releases/tag/v0.5.6",
+    "published_at": "2026-10-05T07:55:16Z",
     "draft": false,
     "prerelease": false,
     "assets": [
       {
-        "name": "pine-0.3.0-linux-x64.tar.gz",
-        "size": 164595340,
-        "browser_download_url": "https://github.com/aurigax-ai/pine/releases/download/v0.3.0/pine-0.3.0-linux-x64.tar.gz"
+        "name": "ostia-0.5.6-arm64.dmg",
+        "size": 123098255,
+        "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v0.5.6/ostia-0.5.6-arm64.dmg"
       },
       {
-        "name": "pine-0.3.0.AppImage",
-        "size": 167484018,
-        "browser_download_url": "https://github.com/aurigax-ai/pine/releases/download/v0.3.0/pine-0.3.0.AppImage"
+        "name": "ostia-0.5.6-linux-x64.tar.gz",
+        "size": 131867908,
+        "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v0.5.6/ostia-0.5.6-linux-x64.tar.gz"
+      },
+      {
+        "name": "ostia-0.5.6.AppImage",
+        "size": 133990935,
+        "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v0.5.6/ostia-0.5.6.AppImage"
       }
     ]
   }

@@ -1,8 +1,8 @@
 import { writeFileSync } from 'node:fs'
 
-const APP_REPO = 'aurigax-ai/pine'
+const APP_REPO = 'aurigax-ai/ostia'
 const dataDir = new URL('../src/data/', import.meta.url)
-const headers = { 'user-agent': 'pine-website-snapshot', accept: 'application/vnd.github+json' }
+const headers = { 'user-agent': 'ostia-website-snapshot', accept: 'application/vnd.github+json' }
 if (process.env.GITHUB_TOKEN) headers.authorization = `Bearer ${process.env.GITHUB_TOKEN}`
 
 async function json(url, withHeaders = false) {
