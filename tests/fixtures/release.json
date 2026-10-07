@@ -16,9 +16,9 @@
       "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v9.8.7/ostia-9.8.7-linux-x64.tar.gz"
     },
     {
-      "name": "ostia-9.8.7.AppImage",
-      "size": 152500000,
-      "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v9.8.7/ostia-9.8.7.AppImage"
+      "name": "ostia_9.8.7_amd64.deb",
+      "size": 101000000,
+      "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v9.8.7/ostia_9.8.7_amd64.deb"
     }
   ]
 }
