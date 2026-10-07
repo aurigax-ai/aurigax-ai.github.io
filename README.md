@@ -96,5 +96,14 @@ again.
 
 ## Licence
 
-This repository has no licence file. The app declares MIT in its `package.json` but ships no licence
-text to mirror here.
+The code in this repository is under the [MIT licence](LICENSE).
+
+The licence does not cover the AurigaX and Ostia names, the Ostia logo and icons, or the screenshots
+of the app. All rights to them are reserved. In this repository they are:
+
+- the logo and icons: `src/assets/icon.svg`, `public/favicon.svg`, `public/favicon-32.png` and
+  `public/apple-touch-icon.png`
+- the screenshots of the app: `src/assets/shots/`
+- the social card, which shows both: `public/og.png`
+
+To build your own site from this code, replace them with your own.
