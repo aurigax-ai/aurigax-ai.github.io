@@ -31,7 +31,7 @@ export function assetKind(name: string): ReleaseAsset['kind'] {
 }
 
 export function assetLabel(asset: Pick<ReleaseAsset, 'kind'>): string {
-  if (asset.kind === 'dmg') return 'macOS disk image, Apple silicon'
+  if (asset.kind === 'dmg') return 'macOS 13 or later disk image, Apple silicon'
   if (asset.kind === 'appimage') return 'Linux AppImage, x64'
   if (asset.kind === 'tarball') return 'Linux tarball of the unpacked app, x64'
   if (asset.kind === 'deb') return 'Debian and Ubuntu package, x64'

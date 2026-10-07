@@ -346,8 +346,8 @@ const release = snapshotRelease
         <p class="lede mt-3 max-w-[52ch]">
           {
             release
-              ? `Version ${release.version}, published ${formatDate(release.publishedAt)}, for macOS on Apple silicon and Linux on x64.`
-              : 'For macOS on Apple silicon and Linux on x64.'
+              ? `Version ${release.version}, published ${formatDate(release.publishedAt)}, for macOS 13 or later on Apple silicon and Linux on x64.`
+              : 'For macOS 13 or later on Apple silicon and Linux on x64.'
           }
         </p>
         <pre class="codeblock mt-6 !bg-background max-w-xl" tabindex="0" aria-label="Command to install with Homebrew"><code>brew install --cask aurigax-ai/tap/ostia</code></pre>

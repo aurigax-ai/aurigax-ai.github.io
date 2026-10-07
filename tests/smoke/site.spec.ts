@@ -123,6 +123,7 @@ test.describe('without JavaScript', () => {
     await expect(page.getByRole('tabpanel').getByRole('img')).toHaveAttribute('alt', /sidebar lists six projects/)
     await expect(page.getByRole('heading', { name: 'See which agents need you' })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Download Ostia for macOS and Linux' })).toBeVisible()
+    await expect(page.getByText('For macOS 13 or later on Apple silicon', { exact: false })).toBeVisible()
   })
 
   test('download renders the build-time snapshot', async ({ page }) => {
