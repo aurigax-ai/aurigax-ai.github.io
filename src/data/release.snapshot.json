@@ -1,26 +1,26 @@
 {
-  "fetchedAt": "2026-10-05T14:00:15.381Z",
+  "fetchedAt": "2026-10-07T08:43:03.955Z",
   "release": {
-    "tag_name": "v0.5.6",
-    "html_url": "https://github.com/aurigax-ai/ostia/releases/tag/v0.5.6",
-    "published_at": "2026-10-05T07:55:16Z",
+    "tag_name": "v0.5.9",
+    "html_url": "https://github.com/aurigax-ai/ostia/releases/tag/v0.5.9",
+    "published_at": "2026-10-07T03:28:43Z",
     "draft": false,
     "prerelease": false,
     "assets": [
       {
-        "name": "ostia-0.5.6-arm64.dmg",
-        "size": 123098255,
-        "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v0.5.6/ostia-0.5.6-arm64.dmg"
+        "name": "ostia-0.5.9-arm64.dmg",
+        "size": 162270933,
+        "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v0.5.9/ostia-0.5.9-arm64.dmg"
       },
       {
-        "name": "ostia-0.5.6-linux-x64.tar.gz",
-        "size": 131867908,
-        "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v0.5.6/ostia-0.5.6-linux-x64.tar.gz"
+        "name": "ostia-0.5.9-linux-x64.tar.gz",
+        "size": 159505724,
+        "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v0.5.9/ostia-0.5.9-linux-x64.tar.gz"
       },
       {
-        "name": "ostia-0.5.6.AppImage",
-        "size": 133990935,
-        "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v0.5.6/ostia-0.5.6.AppImage"
+        "name": "ostia_0.5.9_amd64.deb",
+        "size": 128701228,
+        "browser_download_url": "https://github.com/aurigax-ai/ostia/releases/download/v0.5.9/ostia_0.5.9_amd64.deb"
       }
     ]
   }

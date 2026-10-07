@@ -39,11 +39,11 @@ function setFile(kind: string, value: string): void {
 function show(release: Release): void {
   const region = document.getElementById('release')
   if (region) region.innerHTML = releasePanel(release).value
-  const appImage = release.assets.find((asset) => asset.kind === 'appimage')
   const tarball = release.assets.find((asset) => asset.kind === 'tarball')
+  const deb = release.assets.find((asset) => asset.kind === 'deb')
   const dmg = release.assets.find((asset) => asset.kind === 'dmg')
   if (dmg) setFile('dmg', dmg.name)
-  if (appImage) setFile('appimage', appImage.name)
+  if (deb) setFile('deb', deb.name)
   if (tarball) {
     setFile('tarball', tarball.name)
     setFile('folder', tarball.name.replace(/\.tar\.gz$/, ''))

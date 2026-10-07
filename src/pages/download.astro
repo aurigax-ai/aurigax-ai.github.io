@@ -5,7 +5,7 @@ import { snapshotRelease } from '../lib/snapshot'
 import { releasePanel } from '../lib/views'
 
 const release = snapshotRelease
-const appImage = release?.assets.find((asset) => asset.kind === 'appimage')?.name ?? 'ostia-<version>.AppImage'
+const deb = release?.assets.find((asset) => asset.kind === 'deb')?.name ?? 'ostia_<version>_amd64.deb'
 const tarball =
   release?.assets.find((asset) => asset.kind === 'tarball')?.name ?? 'ostia-<version>-linux-x64.tar.gz'
 const folder = tarball.replace(/\.tar\.gz$/, '')
@@ -14,7 +14,7 @@ const dmg = release?.assets.find((asset) => asset.kind === 'dmg')?.name ?? 'osti
 
 <Base
   title="Download Ostia for macOS and Linux"
-  description="Get the latest Ostia release for macOS with Homebrew or a disk image, or for Linux as an AppImage or a tarball, with install steps and how updates work."
+  description="Get the latest Ostia release for macOS with Homebrew or a disk image, or for Linux as a .deb package or a tarball, with install steps and how updates work."
   current="download"
 >
   <section class="wrap pb-10 pt-12 md:pt-16" aria-labelledby="title">
@@ -78,10 +78,9 @@ const dmg = release?.assets.find((asset) => asset.kind === 'dmg')?.name ?? 'osti
       <h3 class="mt-12 text-sm font-medium uppercase tracking-wide text-muted-foreground">Linux, x64</h3>
       <div class="mt-4 grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
         <div>
-          <h4 class="text-lg font-medium">AppImage</h4>
-          <p class="mt-2 leading-relaxed text-muted-foreground">Make the file executable, then run it.</p>
-          <pre class="codeblock mt-4 !bg-background" tabindex="0" aria-label="AppImage commands"><code>chmod +x <span data-file="appimage">{appImage}</span>
-./<span data-file="appimage">{appImage}</span></code></pre>
+          <h4 class="text-lg font-medium">Debian and Ubuntu (.deb)</h4>
+          <p class="mt-2 leading-relaxed text-muted-foreground">Install the package with apt, then start Ostia from your app menu.</p>
+          <pre class="codeblock mt-4 !bg-background" tabindex="0" aria-label="Deb commands"><code>sudo apt install ./<span data-file="deb">{deb}</span></code></pre>
         </div>
         <div>
           <h4 class="text-lg font-medium">Tarball</h4>
