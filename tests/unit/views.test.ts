@@ -32,9 +32,9 @@ describe('releasePanel', () => {
       published_at: '2026-10-01T16:30:19Z',
       assets: [
         {
-          name: 'pine-0.3.0.AppImage',
+          name: 'pine-0.3.0-linux-x64.tar.gz',
           size: 167484018,
-          browser_download_url: 'https://github.com/aurigax-ai/ostia/releases/download/v0.3.0/pine-0.3.0.AppImage',
+          browser_download_url: 'https://github.com/aurigax-ai/ostia/releases/download/v0.3.0/pine-0.3.0-linux-x64.tar.gz',
         },
       ],
     })
@@ -42,7 +42,7 @@ describe('releasePanel', () => {
     const panel = releasePanel(release).value
     expect(panel).toContain('data-release="0.3.0"')
     expect(panel).toContain('October 1, 2026')
-    expect(panel).toContain('pine-0.3.0.AppImage, 167 MB')
-    expect(panel).toContain('href="https://github.com/aurigax-ai/ostia/releases/download/v0.3.0/pine-0.3.0.AppImage"')
+    expect(panel).toContain('pine-0.3.0-linux-x64.tar.gz, 167 MB')
+    expect(panel).toContain('href="https://github.com/aurigax-ai/ostia/releases/download/v0.3.0/pine-0.3.0-linux-x64.tar.gz"')
   })
 })

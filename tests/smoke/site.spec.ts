@@ -76,10 +76,10 @@ test.describe('with GitHub answering', () => {
     const region = page.locator('#release')
     await expect(region.locator('[data-release="9.8.7"]')).toBeVisible()
     await expect(region).toContainText('March 4, 2027')
-    await expect(region).toContainText('ostia-9.8.7.AppImage, 153 MB')
-    await expect(region.getByRole('link', { name: 'Get the AppImage' })).toHaveAttribute(
+    await expect(region).toContainText('ostia_9.8.7_amd64.deb, 101 MB')
+    await expect(region.getByRole('link', { name: 'Get the .deb' })).toHaveAttribute(
       'href',
-      'https://github.com/aurigax-ai/ostia/releases/download/v9.8.7/ostia-9.8.7.AppImage',
+      'https://github.com/aurigax-ai/ostia/releases/download/v9.8.7/ostia_9.8.7_amd64.deb',
     )
     await expect(region.getByRole('link', { name: 'Get the tarball' })).toBeVisible()
     await expect(region).toContainText('ostia-9.8.7-arm64.dmg, 125 MB')
@@ -89,7 +89,7 @@ test.describe('with GitHub answering', () => {
     )
     await expect(page.getByLabel('Homebrew commands')).toContainText('brew install --cask aurigax-ai/tap/ostia')
     await expect(page.locator('[data-file="dmg"]')).toHaveText('ostia-9.8.7-arm64.dmg')
-    await expect(page.getByLabel('AppImage commands')).toContainText('chmod +x ostia-9.8.7.AppImage')
+    await expect(page.getByLabel('Deb commands')).toContainText('sudo apt install ./ostia_9.8.7_amd64.deb')
     await expect(page.getByLabel('Tarball commands')).toContainText('./ostia-9.8.7-linux-x64/pine')
     await expect(page.locator('#release-status')).toHaveText('Read from GitHub just now.')
     expect(errors).toEqual([])
@@ -103,7 +103,7 @@ test.describe('with GitHub unreachable', () => {
     await page.goto('download/')
     await expect(page.locator('#release-status')).toContainText('GitHub could not be reached')
     await expect(page.locator('#release [data-release]')).toBeVisible()
-    await expect(page.locator('#release').getByRole('link', { name: 'Get the AppImage' })).toHaveAttribute(
+    await expect(page.locator('#release').getByRole('link', { name: 'Get the tarball' })).toHaveAttribute(
       'href',
       /^https:\/\/github\.com\/aurigax-ai\/ostia\/releases\/download\//,
     )

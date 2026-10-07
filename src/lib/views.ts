@@ -22,7 +22,7 @@ export function releasePanel(release: Release): SafeHtml {
                     ${asset.name}, ${formatBytes(asset.size)}
                   </p>
                 </div>
-                <a class="${buttonVariants({ size: 'xl', variant: asset.kind === 'dmg' || asset.kind === 'appimage' ? 'default' : 'outline' })}" href="${asset.url}">
+                <a class="${buttonVariants({ size: 'xl', variant: asset.kind === 'dmg' ? 'default' : 'outline' })}" href="${asset.url}">
                   ${icon('download')} ${assetAction(asset)}
                 </a>
               </li>`,
