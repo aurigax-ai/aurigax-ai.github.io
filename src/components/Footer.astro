@@ -1,14 +1,18 @@
 ---
 import iconUrl from '../assets/icon.svg?url'
 import { href } from '../lib/paths'
-import { APP_REPO_URL, RELEASES_URL } from '../lib/site'
+import { APP_REPO_URL, LICENSE_URL, RELEASES_URL } from '../lib/site'
 ---
 
 <footer class="mt-auto border-t">
   <div class="wrap flex flex-wrap items-center justify-between gap-x-10 gap-y-5 py-9 text-sm text-muted-foreground">
     <p class="flex items-center gap-2.5">
       <img src={iconUrl} alt="" width="20" height="20" class="rounded-[5px]" />
-      Ostia is open source, MIT licensed.
+      <span>
+        Ostia is source-available under
+        <a class="underline underline-offset-4 transition-colors hover:text-foreground" href={LICENSE_URL} rel="noopener">FSL-1.1-MIT</a>,
+        converting to MIT after two years.
+      </span>
     </p>
     <ul class="flex flex-wrap gap-x-6 gap-y-2">
       <li><a class="transition-colors hover:text-foreground" href={href('download/')}>Download</a></li>
